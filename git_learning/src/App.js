@@ -5,13 +5,14 @@ import canvas from './component/canvas'
 
 export default function App() {
     return (
-        <Container fluid>
-            <div className="w-75" style={{maxWidth:"600px"}}>
-                <Router>
+        <Container className="d-flex justify-content-center align-items-center" style={{
+            minHeight:"100vh"}}>
+            <div className="d-flex w-75 justify-content-center align-items-center" style={{maxWidth:"600px", minHeight:"30px"}}>
+               <Router>
                     <Switch>
                         <Route exact path="/" component={canvas} />
                     </Switch>
-                </Router> 
+               </Router>
             </div>
             
         </Container>
