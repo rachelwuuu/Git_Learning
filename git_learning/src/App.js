@@ -7,7 +7,7 @@ export default function App() {
     return (
         <Container className="d-flex justify-content-center align-items-center" style={{
             minHeight:"100vh"}}>
-            <div className="d-flex w-75 justify-content-center align-items-center" style={{maxWidth:"600px", minHeight:"30px"}}>
+            <div className="d-flex w-75 justify-content-center align-items-center flex-column" style={{maxWidth:"600px"}}>
                <Router>
                     <Switch>
                         <Route exact path="/" component={canvas} />
