@@ -2,9 +2,12 @@ import React from 'react'
 
 export default function canvas() {
     function handleSubmit(e){
-        var canvas = document.getElementById("canvas");
-        var ctx= canvas.getContext("2d");
-        
+        e.preventDefault()
+        var newCommit=document.createElement('div')
+        newCommit.id="newCommit";{/**+variable */}
+        newCommit.innerHTML="yea"
+        var parentDiv=document.getElementById("parentDiv")
+        parentDiv.appendChild(newCommit)
     }
     return (
         <>  {/* Note: Use the parent div to make the two elements the same width and have spacing at the same time. 
@@ -15,8 +18,10 @@ export default function canvas() {
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </div>
             </form>
-            
-            <canvas id ="canvas" style={{border:"solid black", width:"100%",height:"100%"}}></canvas>
+            <div id="parentDiv" className="d-flex w-100" style={{border:"solid orange"}}>
+
+            </div>
+           {/* <canvas id ="canvas" style={{border:"solid black", width:"100%",height:"100%"}}></canvas>*/}
         </>
         
         
