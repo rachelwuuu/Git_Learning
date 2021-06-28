@@ -5,7 +5,7 @@ export default function canvas() {
         e.preventDefault()
         var newCommit=document.createElement('div')
         newCommit.id="newCommit";{/**+variable */}
-        newCommit.innerHTML="yea"
+        newCommit.innerHTML=document.getElementById("commit_information").value
         var parentDiv=document.getElementById("parentDiv")
         parentDiv.appendChild(newCommit)
     }
@@ -14,7 +14,7 @@ export default function canvas() {
         As align items center in the parent div doesn't allow it to have spacings*/}
             <form onSubmit={handleSubmit}>
                 <div className="d-flex flex-column w-100 justify-content-center align-items-center mb-5" style={{border:"solid yellow"}}>
-                    <input type="text" className="m-3"/>
+                    <input id="commit_information" type="text" className="m-3"/>
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </div>
             </form>
