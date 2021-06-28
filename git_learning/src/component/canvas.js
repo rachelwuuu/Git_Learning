@@ -1,10 +1,13 @@
 import React from 'react'
 
 export default function canvas() {
+    let divCreationCount=0;
     function handleSubmit(e){
         e.preventDefault()
         var newCommit=document.createElement('div')
-        newCommit.id="newCommit";{/**+variable */}
+        divCreationCount+=1;
+        newCommit.style.border= "solid grey";
+        newCommit.id="newCommit"+divCreationCount;
         newCommit.innerHTML=document.getElementById("commit_information").value
         var parentDiv=document.getElementById("parentDiv")
         parentDiv.appendChild(newCommit)
@@ -18,7 +21,7 @@ export default function canvas() {
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </div>
             </form>
-            <div id="parentDiv" className="d-flex w-100" style={{border:"solid orange"}}>
+            <div id="parentDiv" className="d-flex flex-column w-100" style={{border:"solid orange"}}>
 
             </div>
            {/* <canvas id ="canvas" style={{border:"solid black", width:"100%",height:"100%"}}></canvas>*/}
