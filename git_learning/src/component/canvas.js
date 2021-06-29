@@ -9,6 +9,9 @@ export default function canvas() {
         newCommit.style.border= "solid grey";
         newCommit.id="newCommit"+divCreationCount;
         newCommit.innerHTML=document.getElementById("commit_information").value
+        var commitInfo=document.getElementById("commit_information").value
+        var newCommitInfo=commitInfo.split(/(?=commit)/g);
+        console.log(newCommitInfo)
         var parentDiv=document.getElementById("parentDiv")
         parentDiv.appendChild(newCommit)
     }
