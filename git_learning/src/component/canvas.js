@@ -4,16 +4,22 @@ export default function canvas() {
     let divCreationCount=0;
     function handleSubmit(e){
         e.preventDefault()
-        var newCommit=document.createElement('div')
-        divCreationCount+=1;
-        newCommit.style.border= "solid grey";
-        newCommit.id="newCommit"+divCreationCount;
-        newCommit.innerHTML=document.getElementById("commit_information").value
+        
+        
+        
         var commitInfo=document.getElementById("commit_information").value
-        var newCommitInfo=commitInfo.split(/(?=commit)/g);
-        console.log(newCommitInfo)
-        var parentDiv=document.getElementById("parentDiv")
-        parentDiv.appendChild(newCommit)
+        var newCommitArray=commitInfo.split(/(?=commit)/g);
+        newCommitArray.forEach(element => {
+            var newCommit=document.createElement('div')
+            divCreationCount+=1;
+            newCommit.style.border= "solid grey";
+            newCommit.id="newCommit"+divCreationCount;
+            newCommit.innerHTML=element
+            var parentDiv=document.getElementById("parentDiv")
+            parentDiv.appendChild(newCommit)
+        });
+        
+        
     }
     return (
         <>  {/* Note: Use the parent div to make the two elements the same width and have spacing at the same time. 
