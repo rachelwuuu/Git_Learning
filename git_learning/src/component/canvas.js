@@ -11,12 +11,15 @@ export default function canvas() {
         var newCommitArray=commitInfo.split(/(?=commit)/g);
         newCommitArray.forEach(element => {
             var newCommit=document.createElement('div')
+            var arrow=document.createElementNS('http://www.w3.org/2000/svg',"svg")
             divCreationCount+=1;
             newCommit.style.border= "solid grey";
             newCommit.id="newCommit"+divCreationCount;
             newCommit.innerHTML=element
             var parentDiv=document.getElementById("parentDiv")
             parentDiv.appendChild(newCommit)
+            var newCommitOffset=newCommit.offsetHeight
+            console.log(newCommitOffset+";")
         });
         
         
@@ -39,7 +42,7 @@ export default function canvas() {
                         <path d="M 0 0 L 10 5 L 0 10 z"></path>
                     </marker>
                 </defs>
-                <polyline points="10, 10 10, 90" fill="none" stroke="black" markerStart="url(#arrowHead)" markerEnd="url(#arrowHead)"></polyline>
+                <polyline points="60, 10 10, 90" fill="none" stroke="black" markerEnd="url(#arrowHead)"></polyline>
             </svg>
            {/* <canvas id ="canvas" style={{border:"solid black", width:"100%",height:"100%"}}></canvas>*/}
         </>
