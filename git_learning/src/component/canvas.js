@@ -21,22 +21,22 @@ export default function canvas() {
                 var marker=document.createElementNS('http://www.w3.org/2000/svg',"marker")
                 marker.setAttribute("id","arrowHead")
                 marker.setAttribute("viewBox", "0 0 10 10")
-                marker.setAttribute("markerWidth", "6")
-                marker.setAttribute("markerHeight", "6")
+                marker.setAttribute("markerWidth", "3")
+                marker.setAttribute("markerHeight", "3")
                 marker.setAttribute("refX", "5")
                 marker.setAttribute("refY", "5")
                 marker.setAttribute("orient", "auto-start-reverse")
                 var polyline=document.createElementNS('http://www.w3.org/2000/svg',"polyline")
-                polyline.setAttribute("points","10, 10 10, 90")
+                polyline.setAttribute("points","50, 0 50, 20")
                 polyline.setAttribute("fill","none")
                 polyline.setAttribute("stroke","black")
                 polyline.setAttribute("marker-end","url(#arrowHead)")
                 var defs=document.createElementNS('http://www.w3.org/2000/svg','defs')
                 var arrow=document.createElementNS('http://www.w3.org/2000/svg',"svg")
-                arrow.setAttribute("viewBox","0 0 100 100")
+                arrow.setAttribute("viewBox","0 0 100 22")
                 arrow.setAttributeNS('http://www.w3.org/2000/xmlns/',"xmlns:xlink",'http://www.w3.org/2000/xmlns/')
                 var connectingDiv=document.createElement('div')
-                connectingDiv.style.border= "solid red";
+                connectingDiv.style.background= "solid red";
                 connectingDiv.id="connectingDiv"+(divCreationCount);
                 
                 parentDiv.appendChild(connectingDiv)
@@ -70,15 +70,7 @@ export default function canvas() {
             <div id="parentDiv" className="d-flex flex-column w-100" style={{border:"solid orange"}}>
 
             </div>
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <marker id="arrowHead" viewBox="0 0 10 10" markerWidth="6" markerHeight="6" refX="5" refY="5" orient="auto-start-reverse">
-                        <path d="M 0 0 L 10 5 L 0 10 z"></path>
-                    </marker>
-                </defs>
-                <polyline points="10, 10 10, 90" fill="none" stroke="black" markerEnd="url(#arrowHead)"></polyline>
-            </svg>
-           {/* <canvas id ="canvas" style={{border:"solid black", width:"100%",height:"100%"}}></canvas>*/}
+           
         </>
         
         
