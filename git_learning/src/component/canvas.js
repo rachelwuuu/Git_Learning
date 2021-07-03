@@ -30,7 +30,7 @@ export default function canvas() {
                 polyline.setAttribute("points","10, 10 10, 90")
                 polyline.setAttribute("fill","none")
                 polyline.setAttribute("stroke","black")
-                polyline.setAttribute("markerEnd","url(#arrowHead)")
+                polyline.setAttribute("marker-end","url(#arrowHead)")
                 var defs=document.createElementNS('http://www.w3.org/2000/svg','defs')
                 var arrow=document.createElementNS('http://www.w3.org/2000/svg',"svg")
                 arrow.setAttribute("viewBox","0 0 100 100")
