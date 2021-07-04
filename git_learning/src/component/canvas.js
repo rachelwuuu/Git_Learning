@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function canvas() {
     let divCreationCount=0;
-    
+    let commitBoxIdArray=[]
     function handleSubmit(e){
         e.preventDefault()
         var commitInfo=document.getElementById("commit_information").value
@@ -47,18 +47,19 @@ export default function canvas() {
             divCreationCount+=1;
             newCommit.style.border= "solid grey";
             newCommit.id="newCommit"+divCreationCount;
+            commitBoxIdArray.push(newCommit.id)
             newCommit.innerHTML=element
             newCommit.addEventListener("click",function(e)
             {
+                for(var i=0; i<commitBoxIdArray.length;i++){
+                    if(document.getElementById(commitBoxIdArray[i]).style.border==="solid green"){
+                        document.getElementById(commitBoxIdArray[i]).style.border="solid grey";
+                    }
+                }
                 document.getElementById(newCommit.id).style.border="solid green"
             })
             parentDiv.appendChild(newCommit)
         });   
-    }
-    function turnBlueWhenClicked(){
-        document.getElementById(this.id);
-        console.log("what"+this.id)
-        console.log("whats")
     }
     return (
         <>  {/* Note: Use the parent div to make the two elements the same width and have spacing at the same time. 
