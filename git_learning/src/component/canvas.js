@@ -2,20 +2,16 @@ import React from 'react'
 
 export default function canvas() {
     let divCreationCount=0;
+    
     function handleSubmit(e){
         e.preventDefault()
-        
-        
-        
         var commitInfo=document.getElementById("commit_information").value
         var newCommitArray=commitInfo.split(/(?=commit)/g);
         newCommitArray.reverse().forEach(element => {
             var newCommit=document.createElement('div')
             var parentDiv=document.getElementById("parentDiv")
-            console.log("div"+newCommitArray.length)
             var lastElementId=newCommitArray-1;
             if(divCreationCount>0||divCreationCount<(lastElementId)){
-                console.log("...")
                 var path=document.createElementNS('http://www.w3.org/2000/svg',"path")
                 path.setAttributeNS(null,"d", "M 0 0 L 10 5 L 0 10 z")
                 var marker=document.createElementNS('http://www.w3.org/2000/svg',"marker")
@@ -52,11 +48,17 @@ export default function canvas() {
             newCommit.style.border= "solid grey";
             newCommit.id="newCommit"+divCreationCount;
             newCommit.innerHTML=element
-            
+            newCommit.addEventListener("click",function(e)
+            {
+                document.getElementById(newCommit.id).style.border="solid green"
+            })
             parentDiv.appendChild(newCommit)
-        });
-        
-        
+        });   
+    }
+    function turnBlueWhenClicked(){
+        document.getElementById(this.id);
+        console.log("what"+this.id)
+        console.log("whats")
     }
     return (
         <>  {/* Note: Use the parent div to make the two elements the same width and have spacing at the same time. 
