@@ -2,22 +2,29 @@ import React from 'react'
 import {Card} from "react-bootstrap"
 export default function canvas() {
     let divCreationCount=0;
-    let commitBoxIdArray=[]
+    /////(HEAD can only appear once)
     function handleSubmit(e){
         e.preventDefault()
         ///////////1.Separate the text from input box and store them in an array
         var commitInfo=document.getElementById("commit_information").value
         //commit d8403b71c9f44d6e619651dbf51e24ec66a487e7
         if (commitInfo.startsWith("commit ")){
+            let commitBoxIdArray=[]
             var newCommitArray=commitInfo.split(/(?=commit)/g);
             var validCommitMessage=false;
+            let authorArray=[]
+            let timeArray=[]
             //////////////2. Loop through the array and draw the elements dynamically on the website
-            for(let k=newCommitArray.length-1;k>=0;k--) {
-                let element=newCommitArray[k];
-                let commitId=element.substring(7,47)
+            for(let p=0;p<newCommitArray.length;p++) {
+                let elementCheck=newCommitArray[p];
+                let commitId=elementCheck.substring(7,47)
                 let patternOfGitCommitId=/[\w]{40}/
-                if(patternOfGitCommitId.test(commitId) && element.charAt(47)===" "){
+                if(patternOfGitCommitId.test(commitId) && elementCheck.charAt(47)===" "){
                     validCommitMessage=true;
+                    var Author=elementCheck.split(/(?=Author: )/).pop().split(/(?= Date)/)[0]
+                    authorArray.push(Author)
+                    var commitTime=elementCheck.split(/(?=(Date: ))/).pop().split(/(?= -)/)[0]
+                    timeArray.push(commitTime)
                 }else{
                     console.log("Please enter a commit message with a valid commit id.")
                     validCommitMessage=false;
