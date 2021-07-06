@@ -10,12 +10,23 @@ export default function canvas() {
         //commit d8403b71c9f44d6e619651dbf51e24ec66a487e7
         if (commitInfo.startsWith("commit ")){
             var newCommitArray=commitInfo.split(/(?=commit)/g);
+            var validCommitMessage=false;
             //////////////2. Loop through the array and draw the elements dynamically on the website
-            newCommitArray.reverse().forEach(element => {
-                var commitId=element.substring(7,47)
-                var patternOfGitCommitId=/[\w]{40}/
-                console.log(element.charAt(47))
+            for(let k=newCommitArray.length-1;k>=0;k--) {
+                let element=newCommitArray[k];
+                let commitId=element.substring(7,47)
+                let patternOfGitCommitId=/[\w]{40}/
                 if(patternOfGitCommitId.test(commitId) && element.charAt(47)===" "){
+                    validCommitMessage=true;
+                }else{
+                    console.log("Please enter a commit message with a valid commit id.")
+                    validCommitMessage=false;
+                    break;
+                }
+            }
+            if(validCommitMessage){
+                for(let k=newCommitArray.length-1;k>=0;k--) {
+                    var element=newCommitArray[k];
                     var newCommit=document.createElement('div')
                     var parentDiv=document.getElementById("parentDiv")
                     var lastElementId=newCommitArray-1;
@@ -57,22 +68,20 @@ export default function canvas() {
                     newCommit.id="newCommit"+divCreationCount;
                     commitBoxIdArray.push(newCommit.id)
                     newCommit.innerHTML=element
-                    newCommit.addEventListener("click",function(e)
-                    {
-                        for(var i=0; i<commitBoxIdArray.length;i++){
-                            if(document.getElementById(commitBoxIdArray[i]).style.border==="solid green"){
-                                document.getElementById(commitBoxIdArray[i]).style.border="solid grey";
-                            }
-                        }
-                        document.getElementById(newCommit.id).style.border="solid green"
-                    })
+                    newCommit.addEventListener("click",divChangeWhenClicked(newCommit.id))
                     parentDiv.appendChild(newCommit)
-                }else{
-                    console.log("Please enter a commit message with a valid commit id.")
+                };   
+            }
+            function divChangeWhenClicked(id){
+                return function(){
+                    for(var i=0; i<commitBoxIdArray.length;i++){
+                        if(document.getElementById(commitBoxIdArray[i]).style.border==="solid green"){
+                            document.getElementById(commitBoxIdArray[i]).style.border="solid grey";
+                        }
+                    }
+                    document.getElementById(id).style.border="solid green"
                 }
-                
-            });   
-            
+            }
             
         }else if(commitInfo.startsWith("git ")){
 
