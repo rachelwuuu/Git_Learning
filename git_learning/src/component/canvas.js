@@ -3,6 +3,7 @@ import {Card} from "react-bootstrap"
 export default function canvas() {
     let divCreationCount=0;
     /////(HEAD can only appear once)
+    //Explore what is -0400 in the commit message
     function handleSubmit(e){
         e.preventDefault()
         ///////////1.Separate the text from input box and store them in an array
@@ -14,17 +15,21 @@ export default function canvas() {
             var validCommitMessage=false;
             let authorArray=[]
             let timeArray=[]
+            let commitMessageArray=[]
             //////////////2. Loop through the array and draw the elements dynamically on the website
             for(let p=0;p<newCommitArray.length;p++) {
                 let elementCheck=newCommitArray[p];
+                //continue spliting the commit message into commit id, author, date
                 let commitId=elementCheck.substring(7,47)
                 let patternOfGitCommitId=/[\w]{40}/
                 if(patternOfGitCommitId.test(commitId) && elementCheck.charAt(47)===" "){
                     validCommitMessage=true;
-                    var Author=elementCheck.split(/(?=Author: )/).pop().split(/(?= Date)/)[0]
+                    var Author=elementCheck.split(/(?=Author: )/).pop().split(/(?= Date)/)[0].trim()
                     authorArray.push(Author)
-                    var commitTime=elementCheck.split(/(?=(Date: ))/).pop().split(/(?= -)/)[0]
+                    var commitTime=elementCheck.split(/(?=(Date: ))/).pop().split(/(?= -)/)[0].trim()
                     timeArray.push(commitTime)
+                    var commitMessage=elementCheck.split(/-(\d){4} /).pop().trim()
+                    commitMessageArray.push(commitMessage)
                 }else{
                     console.log("Please enter a commit message with a valid commit id.")
                     validCommitMessage=false;
