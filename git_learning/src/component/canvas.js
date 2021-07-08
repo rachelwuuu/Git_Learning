@@ -10,25 +10,27 @@ export default function canvas() {
         var commitInfo=document.getElementById("commit_information").value
         //commit d8403b71c9f44d6e619651dbf51e24ec66a487e7
         if (commitInfo.startsWith("commit ")){
-            let commitBoxIdArray=[]
+            var commitBoxIdArray=[]
             var newCommitArray=commitInfo.split(/(?=commit)/g);
             var validCommitMessage=false;
             let authorArray=[]
             let timeArray=[]
             let commitMessageArray=[]
+            let commitIdArray=[]
             //////////////2. Loop through the array and draw the elements dynamically on the website
             for(let p=0;p<newCommitArray.length;p++) {
                 let elementCheck=newCommitArray[p];
-                //continue spliting the commit message into commit id, author, date
+                //continue spliting the commit message into commit id, author, date, and commit message
                 let commitId=elementCheck.substring(7,47)
                 let patternOfGitCommitId=/[\w]{40}/
                 if(patternOfGitCommitId.test(commitId) && elementCheck.charAt(47)===" "){
                     validCommitMessage=true;
-                    var Author=elementCheck.split(/(?=Author: )/).pop().split(/(?= Date)/)[0].trim()
+                    commitIdArray.push(commitId);
+                    let Author=elementCheck.split(/(?=Author: )/).pop().split(/(?= Date)/)[0].trim()
                     authorArray.push(Author)
-                    var commitTime=elementCheck.split(/(?=(Date: ))/).pop().split(/(?= -)/)[0].trim()
+                    let commitTime=elementCheck.split(/(?=(Date: ))/).pop().split(/(?= -)/)[0].trim()
                     timeArray.push(commitTime)
-                    var commitMessage=elementCheck.split(/-(\d){4} /).pop().trim()
+                    let commitMessage=elementCheck.split(/-(\d){4} /).pop().trim()
                     commitMessageArray.push(commitMessage)
                 }else{
                     console.log("Please enter a commit message with a valid commit id.")
@@ -38,7 +40,13 @@ export default function canvas() {
             }
             if(validCommitMessage){
                 for(let k=newCommitArray.length-1;k>=0;k--) {
-                    var element=newCommitArray[k];
+                    var element = newCommitArray[k];
+                    let commitId=commitIdArray[k];
+                    let author = authorArray[k];
+                    let commitTime = timeArray[k];
+                    let commitMessage = commitMessageArray[k];
+                    let commitIdDiv=document.createElement('h5')
+                    commitIdDiv.innerHTML="Commit "+commitId
                     var newCommit=document.createElement('div')
                     var parentDiv=document.getElementById("parentDiv")
                     var lastElementId=newCommitArray-1;
@@ -79,14 +87,15 @@ export default function canvas() {
                     newCommit.style.border= "solid grey";
                     newCommit.id="newCommit"+divCreationCount;
                     commitBoxIdArray.push(newCommit.id)
-                    newCommit.innerHTML=element
+                    newCommit.appendChild(commitIdDiv)
                     newCommit.addEventListener("click",divChangeWhenClicked(newCommit.id))
                     parentDiv.appendChild(newCommit)
                 };   
             }
             function divChangeWhenClicked(id){
                 return function(){
-                    for(var i=0; i<commitBoxIdArray.length;i++){
+                    for(let i=0; i<commitBoxIdArray.length;i++){
+                        console.log(commitBoxIdArray.length)
                         if(document.getElementById(commitBoxIdArray[i]).style.border==="solid green"){
                             document.getElementById(commitBoxIdArray[i]).style.border="solid grey";
                         }
@@ -107,8 +116,8 @@ export default function canvas() {
         <>  {/* Note: Use the parent div to make the two elements the same width and have spacing at the same time. 
         As align items center in the parent div doesn't allow it to have spacings*/}
             <form onSubmit={handleSubmit}>
-                <div className="d-flex flex-column w-100 justify-content-center align-items-center mb-5" style={{border:"solid yellow"}}>
-                    <input id="commit_information" type="text" className="m-3"/>
+                <div className="d-flex flex-column w-100 justify-content-center align-items-center mb-5">
+                    <input id="commit_information" type="text" className="m-3 w-50" rows="3"/>
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </div>
             </form>
