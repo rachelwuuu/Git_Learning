@@ -40,15 +40,31 @@ export default function canvas() {
             }
             if(validCommitMessage){
                 for(let k=newCommitArray.length-1;k>=0;k--) {
-                    var element = newCommitArray[k];
                     let commitId=commitIdArray[k];
                     let author = authorArray[k];
                     let commitTime = timeArray[k];
                     let commitMessage = commitMessageArray[k];
+                    let newCommit=document.createElement('div')
+                    newCommit.style.border= "solid grey";
+                    newCommit.className="p-5 w-75 align-self-center"
+                    let parentDiv=document.getElementById("parentDiv")
+                    let commitTitle=document.createElement('h6')
+                    commitTitle.innerHTML="Commit"
+                    commitTitle.style.color="grey"
+                    commitTitle.style.marginBottom=0;
+                    newCommit.appendChild(commitTitle);
                     let commitIdDiv=document.createElement('h5')
-                    commitIdDiv.innerHTML="Commit "+commitId
-                    var newCommit=document.createElement('div')
-                    var parentDiv=document.getElementById("parentDiv")
+                    commitIdDiv.innerHTML=commitId
+                    newCommit.appendChild(commitIdDiv)
+                    let authorInformation=document.createElement("li")
+                    authorInformation.innerHTML = author
+                    newCommit.appendChild(authorInformation)
+                    let commitTimeInformation=document.createElement("li")
+                    commitTimeInformation.innerHTML = commitTime
+                    newCommit.appendChild(commitTimeInformation)
+                    let commitMessageInformation=document.createElement("li")
+                    commitMessageInformation.innerHTML = commitMessage
+                    newCommit.appendChild(commitMessageInformation)
                     var lastElementId=newCommitArray-1;
                     ////////(1)draw svg of the arrow between the commit boxes within the if statement//////////
                     if(divCreationCount>0||divCreationCount<(lastElementId)){
@@ -84,10 +100,10 @@ export default function canvas() {
                     }
                     
                     divCreationCount+=1;
-                    newCommit.style.border= "solid grey";
+                    
                     newCommit.id="newCommit"+divCreationCount;
                     commitBoxIdArray.push(newCommit.id)
-                    newCommit.appendChild(commitIdDiv)
+                    
                     newCommit.addEventListener("click",divChangeWhenClicked(newCommit.id))
                     parentDiv.appendChild(newCommit)
                 };   
