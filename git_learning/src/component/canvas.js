@@ -8,123 +8,119 @@ export default function canvas() {
         e.preventDefault()
         ///////////1.Separate the text from input box and store them in an array
         var commitInfo=document.getElementById("commit_information").value
-        //commit d8403b71c9f44d6e619651dbf51e24ec66a487e7
         if (commitInfo.startsWith("commit ")){
-            var commitBoxIdArray=[]
-            var newCommitArray=commitInfo.split(/(?=commit)/g);
-            var validCommitMessage=false;
-            let authorArray=[]
-            let timeArray=[]
-            let commitMessageArray=[]
-            let commitIdArray=[]
-            //////////////2. Loop through the array and draw the elements dynamically on the website
-            for(let p=0;p<newCommitArray.length;p++) {
-                let elementCheck=newCommitArray[p];
-                //continue spliting the commit message into commit id, author, date, and commit message
-                let commitId=elementCheck.substring(7,47)
-                let patternOfGitCommitId=/[\w]{40}/
-                if(patternOfGitCommitId.test(commitId) && elementCheck.charAt(47)===" "){
-                    validCommitMessage=true;
-                    commitIdArray.push(commitId);
-                    let Author=elementCheck.split(/(?=Author: )/).pop().split(/(?= Date)/)[0].trim()
-                    authorArray.push(Author)
-                    let commitTime=elementCheck.split(/(?=(Date: ))/).pop().split(/(?= -)/)[0].trim()
-                    timeArray.push(commitTime)
-                    let commitMessage=elementCheck.split(/-(\d){4} /).pop().trim()
-                    commitMessageArray.push(commitMessage)
-                }else{
-                    console.log("Please enter a commit message with a valid commit id.")
-                    validCommitMessage=false;
-                    break;
-                }
-            }
-            if(validCommitMessage){
-                for(let k=newCommitArray.length-1;k>=0;k--) {
-                    let commitId=commitIdArray[k];
-                    let author = authorArray[k];
-                    let commitTime = timeArray[k];
-                    let commitMessage = commitMessageArray[k];
-                    let newCommit=document.createElement('div')
-                    newCommit.style.border= "solid grey";
-                    newCommit.className="p-5 w-75 align-self-center"
-                    let parentDiv=document.getElementById("parentDiv")
-                    let commitTitle=document.createElement('h6')
-                    commitTitle.innerHTML="Commit"
-                    commitTitle.style.color="grey"
-                    commitTitle.style.marginBottom=0;
-                    newCommit.appendChild(commitTitle);
-                    let commitIdDiv=document.createElement('h5')
-                    commitIdDiv.innerHTML=commitId
-                    newCommit.appendChild(commitIdDiv)
-                    let authorInformation=document.createElement("li")
-                    authorInformation.innerHTML = author
-                    newCommit.appendChild(authorInformation)
-                    let commitTimeInformation=document.createElement("li")
-                    commitTimeInformation.innerHTML = commitTime
-                    newCommit.appendChild(commitTimeInformation)
-                    let commitMessageInformation=document.createElement("li")
-                    commitMessageInformation.innerHTML = commitMessage
-                    newCommit.appendChild(commitMessageInformation)
-                    var lastElementId=newCommitArray-1;
-                    ////////(1)draw svg of the arrow between the commit boxes within the if statement//////////
-                    if(divCreationCount>0||divCreationCount<(lastElementId)){
-                        var path=document.createElementNS('http://www.w3.org/2000/svg',"path")
-                        path.setAttributeNS(null,"d", "M 0 0 L 10 5 L 0 10 z")
-                        var marker=document.createElementNS('http://www.w3.org/2000/svg',"marker")
-                        marker.setAttribute("id","arrowHead")
-                        marker.setAttribute("viewBox", "0 0 10 10")
-                        marker.setAttribute("markerWidth", "3")
-                        marker.setAttribute("markerHeight", "3")
-                        marker.setAttribute("refX", "5")
-                        marker.setAttribute("refY", "5")
-                        marker.setAttribute("orient", "auto-start-reverse")
-                        var polyline=document.createElementNS('http://www.w3.org/2000/svg',"polyline")
-                        polyline.setAttribute("points","50, 0 50, 20")
-                        polyline.setAttribute("fill","none")
-                        polyline.setAttribute("stroke","black")
-                        polyline.setAttribute("marker-end","url(#arrowHead)")
-                        var defs=document.createElementNS('http://www.w3.org/2000/svg','defs')
-                        var arrow=document.createElementNS('http://www.w3.org/2000/svg',"svg")
-                        arrow.setAttribute("viewBox","0 0 100 22")
-                        arrow.setAttributeNS('http://www.w3.org/2000/xmlns/',"xmlns:xlink",'http://www.w3.org/2000/xmlns/')
-                        var connectingDiv=document.createElement('div')
-                        connectingDiv.id="connectingDiv"+(divCreationCount);
-                        
-                        parentDiv.appendChild(connectingDiv)
-                        connectingDiv.appendChild(arrow)
-                        arrow.appendChild(defs)
-                        defs.appendChild(marker)
-                        marker.appendChild(path)
-                        arrow.appendChild(polyline)
-                    
+            if(commitInfo.includes("HEAD")){
+                var commitBoxIdArray=[]
+                var newCommitArray=commitInfo.split(/(?=commit)/g);
+                var validCommitMessage=false;
+                var authorArray=[]
+                var timeArray=[]
+                var commitMessageArray=[]
+                var commitIdArray=[]
+                //////////////2. Loop through the array and draw the elements dynamically on the website
+                for(let p=0;p<newCommitArray.length;p++) {
+                    let elementCheck=newCommitArray[p];
+                    //continue spliting the commit message into commit id, author, date, and commit message
+                    let commitId=elementCheck.substring(7,47)
+                    let patternOfGitCommitId=/[\w]{40}/
+                    if(patternOfGitCommitId.test(commitId) && elementCheck.charAt(47)===" "){
+                        validCommitMessage=true;
+                        commitIdArray.push(commitId);
+                        let Author=elementCheck.split(/(?=Author: )/).pop().split(/(?= Date)/)[0].trim()
+                        authorArray.push(Author)
+                        let commitTime=elementCheck.split(/(?=(Date: ))/).pop().split(/(?= -)/)[0].trim()
+                        timeArray.push(commitTime)
+                        let commitMessage=elementCheck.split(/-(\d){4} /).pop().trim()
+                        commitMessageArray.push(commitMessage)
+                    }else{
+                        console.log("Please enter a commit message with a valid commit id.")
+                        validCommitMessage=false;
+                        break;
                     }
-                    
-                    divCreationCount+=1;
-                    
-                    newCommit.id="newCommit"+divCreationCount;
-                    commitBoxIdArray.push(newCommit.id)
-                    
-                    newCommit.addEventListener("click",divChangeWhenClicked(newCommit.id))
-                    parentDiv.appendChild(newCommit)
-                };   
-            }
-            function divChangeWhenClicked(id){
-                return function(){
-                    for(let i=0; i<commitBoxIdArray.length;i++){
-                        console.log(commitBoxIdArray.length)
-                        if(document.getElementById(commitBoxIdArray[i]).style.border==="solid green"){
-                            document.getElementById(commitBoxIdArray[i]).style.border="solid grey";
-                        }
-                    }
-                    document.getElementById(id).style.border="solid green"
                 }
+            }else{
+                console.log("Please enter a commit git commit with the HEAD pointer")
             }
-            
-        }else if(commitInfo.startsWith("git ")){
-
-        }else{
-            console.log("Please add a commit message or a git command")
         }
+        if(validCommitMessage){
+            for(let k=newCommitArray.length-1;k>=0;k--) {
+                let commitId=commitIdArray[k];
+                let author = authorArray[k];
+                let commitTime = timeArray[k];
+                let commitMessage = commitMessageArray[k];
+                let newCommit=document.createElement('div')
+                newCommit.style.border= "solid grey";
+                newCommit.className="p-5 w-75 align-self-center"
+                let parentDiv=document.getElementById("parentDiv")
+                let commitTitle=document.createElement('h6')
+                commitTitle.innerHTML="Commit"
+                commitTitle.style.color="grey"
+                commitTitle.style.marginBottom=0;
+                newCommit.appendChild(commitTitle);
+                let commitIdDiv=document.createElement('h5')
+                commitIdDiv.innerHTML=commitId
+                newCommit.appendChild(commitIdDiv)
+                let authorInformation=document.createElement("li")
+                authorInformation.innerHTML = author
+                newCommit.appendChild(authorInformation)
+                let commitTimeInformation=document.createElement("li")
+                commitTimeInformation.innerHTML = commitTime
+                newCommit.appendChild(commitTimeInformation)
+                let commitMessageInformation=document.createElement("li")
+                commitMessageInformation.innerHTML = commitMessage
+                newCommit.appendChild(commitMessageInformation)
+                var lastElementId=newCommitArray-1;
+                ////////(1)draw svg of the arrow between the commit boxes within the if statement//////////
+                if(divCreationCount>0||divCreationCount<(lastElementId)){
+                    var path=document.createElementNS('http://www.w3.org/2000/svg',"path")
+                    path.setAttributeNS(null,"d", "M 0 0 L 10 5 L 0 10 z")
+                    var marker=document.createElementNS('http://www.w3.org/2000/svg',"marker")
+                    marker.setAttribute("id","arrowHead")
+                    marker.setAttribute("viewBox", "0 0 10 10")
+                    marker.setAttribute("markerWidth", "3")
+                    marker.setAttribute("markerHeight", "3")
+                    marker.setAttribute("refX", "5")
+                    marker.setAttribute("refY", "5")
+                    marker.setAttribute("orient", "auto-start-reverse")
+                    var polyline=document.createElementNS('http://www.w3.org/2000/svg',"polyline")
+                    polyline.setAttribute("points","50, 0 50, 20")
+                    polyline.setAttribute("fill","none")
+                    polyline.setAttribute("stroke","black")
+                    polyline.setAttribute("marker-end","url(#arrowHead)")
+                    var defs=document.createElementNS('http://www.w3.org/2000/svg','defs')
+                    var arrow=document.createElementNS('http://www.w3.org/2000/svg',"svg")
+                    arrow.setAttribute("viewBox","0 0 100 22")
+                    arrow.setAttributeNS('http://www.w3.org/2000/xmlns/',"xmlns:xlink",'http://www.w3.org/2000/xmlns/')
+                    var connectingDiv=document.createElement('div')
+                    connectingDiv.id="connectingDiv"+(divCreationCount);
+                    
+                    parentDiv.appendChild(connectingDiv)
+                    connectingDiv.appendChild(arrow)
+                    arrow.appendChild(defs)
+                    defs.appendChild(marker)
+                    marker.appendChild(path)
+                    arrow.appendChild(polyline)
+                
+                }
+                
+                divCreationCount+=1;
+                
+                newCommit.id="newCommit"+divCreationCount;
+                commitBoxIdArray.push(newCommit.id)
+                
+                newCommit.addEventListener("click",divChangeWhenClicked(newCommit.id))
+                parentDiv.appendChild(newCommit)
+            };   
+        }
+        function divChangeWhenClicked(id){
+            return function(){
+                for(let i=0; i<commitBoxIdArray.length;i++){
+                    document.getElementById(commitBoxIdArray[i]).style.boxShadow="";
+                }
+                document.getElementById(id).style.boxShadow="0 0 12px grey"
+            }
+        }
+            
         
         
     }
