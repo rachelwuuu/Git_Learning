@@ -46,23 +46,21 @@ export default function canvas() {
             for(let k=0;k<newCommitArray.length;k++) {
                 let commitId=commitIdArray[k];
                 let author = authorArray[k];
-                let commitTime = timeArray[k];
                 let commitMessage = commitMessageArray[k];
+                let commitTime = timeArray[k];
                 let commitBox=document.createElement('div')
-                
-                if(newCommitArray[k].includes("HEAD")){
-                    commitBox.style.boxShadow="0 0 12px rgb(0,146,205)"
-                    commitBox.style.border= "solid rgb(0,146,205)"
-                }else{
-                    commitBox.style.border= "solid grey";
-                }
                 commitBox.className="p-5 w-75 align-self-center"
                 let parentDiv=document.getElementById("parentDiv")
                 let commitTitle=document.createElement('h6')
+                //Ticket: can't have two HEADs
                 if(newCommitArray[k].includes("HEAD")){
+                    commitBox.style.boxShadow="0 0 12px rgb(0,146,205)"
+                    commitBox.style.border= "solid rgb(0,146,205)"
                     commitTitle.innerHTML="Commit (Current HEAD)"
+                    var headTime=commitTime;
                 }else{
                     commitTitle.innerHTML="Commit"
+                    commitBox.style.border= "solid grey";
                 }
                 
                 commitTitle.style.color="grey"
@@ -116,15 +114,17 @@ export default function canvas() {
                 
                 divCreationCount+=1;
                 
-                commitBox.id="newCommit"+divCreationCount;
+                commitBox.id="CommitBox"+divCreationCount;
                 commitBoxIdArray.push(commitBox.id)
                 
-                commitBox.addEventListener("click",divChangeWhenClicked(commitBox.id))
+                commitBox.addEventListener("click",divChangeWhenClicked(commitBox.id, commitTime))
                 parentDiv.appendChild(commitBox)
             };   
         }
-        function divChangeWhenClicked(id){
+        //Function that is called when div is clicked
+        function divChangeWhenClicked(id, commitTime){
             return function(){
+                //Change Div shadow
                 for(let i=0; i<commitBoxIdArray.length;i++){
                     if( document.getElementById(commitBoxIdArray[i]).style.border!=="solid rgb(0, 146, 205)"){
                         document.getElementById(commitBoxIdArray[i]).style.boxShadow="";
@@ -133,6 +133,23 @@ export default function canvas() {
                     }
                 }
                 document.getElementById(id).style.boxShadow="0 0 12px grey"
+                //Check if commit is commited earlier than head
+                //Ticket: confirm if -0400 is GMT+0400
+                if(commitTime){
+                    let currentCommitYear=commitTime.match(/[0-9]{4}$/)
+                    let currentCommitHrMinSec=commitTime.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/)
+                    let currentCommitMonthDay=commitTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
+                    let currentCommitTime=new Date(currentCommitMonthDay+", "+currentCommitYear+" "+currentCommitHrMinSec)
+                    let headCommitYear=headTime.match(/[0-9]{4}$/)
+                    let headCommitHrMinSec=headTime.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/)
+                    let headCommitMonthDay=headTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
+                    let currentHeadTime=new Date(headCommitMonthDay+", "+headCommitYear+" "+headCommitHrMinSec)
+                    if(currentHeadTime>currentCommitTime){
+                        console.log("Match")
+                    }else{
+                        console.log("No")
+                    }
+                }
             }
         }
             
