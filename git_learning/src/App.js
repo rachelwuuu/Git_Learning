@@ -5,16 +5,14 @@ import canvas from './component/canvas'
 {/*1.reactjs 2. bootstrap 3.svg from w3c 4. router? 5.react-bootstrap 6.regex */}
 export default function App() {
     return (
-        <Container className="d-flex justify-content-center align-items-center" style={{
-            minHeight:"100vh"}}>
-            <div className="card d-flex w-75 justify-content-center align-items-between flex-column" style={{maxWidth:"600px", border:"solid grey"}}>
+        
                <Router>
                     <Switch>
                         <Route exact path="/" component={canvas} />
                     </Switch>
                </Router>
-            </div>
             
-        </Container>
+            
+        
     )
 }

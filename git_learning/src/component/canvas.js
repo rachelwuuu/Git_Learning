@@ -1,5 +1,6 @@
 import React from 'react'
 import {Card} from "react-bootstrap"
+import {Container} from "react-bootstrap"
 export default function canvas() {
     let divCreationCount=0;
     /////(HEAD can only appear once)
@@ -159,16 +160,27 @@ export default function canvas() {
     return (
         <>  {/* Note: Use the parent div to make the two elements the same width and have spacing at the same time. 
         As align items center in the parent div doesn't allow it to have spacings*/}
-            <form onSubmit={handleSubmit}>
-                <div className="d-flex flex-column w-100 justify-content-center align-items-center mb-5">
-                    <input id="commit_information" type="text" className="m-3 w-50" rows="3"/>
-                    <button type="submit" className="btn btn-primary">Submit</button>
-                </div>
-            </form>
-            <Card id="parentDiv" className="d-flex flex-column w-100">
+            <Container className="d-flex justify-content-center align-items-center" style={{minHeight:"100vh",minWidth:"100vw"}}>
+                
+                <div className="d-flex flex-row" style={{minWidth:"1000px"}}>
+                    <div className="col p-0 justify-content-center align-items-center"> 
+                        <div className="card d-flex w-75 justify-content-center align-items-between flex-column offset-md-2" style={{maxWidth:"600px", border:"solid grey"}}>
+                            <form onSubmit={handleSubmit}>
+                                <div className="d-flex flex-column w-100 justify-content-center align-items-center mb-5">
+                                    <input id="commit_information" type="text" className="m-3 w-50" rows="3"/>
+                                    <button type="submit" className="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                            <Card id="parentDiv" className="d-flex flex-column w-100">
 
-            </Card>
-           
+                            </Card>
+                        </div>    
+                    </div>
+                    <div className="ml-5 col" style={{ maxWidth:"200px"}}>
+                        <p>haha</p>
+                    </div>
+                </div>
+            </Container>
         </>
         
         
