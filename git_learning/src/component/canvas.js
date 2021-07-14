@@ -67,9 +67,9 @@ export default function canvas() {
                 commitTitle.style.color="grey"
                 commitTitle.style.marginBottom=0;
                 commitBox.appendChild(commitTitle);
-                let commitIdDiv=document.createElement('h5')
-                commitIdDiv.innerHTML=commitId
-                commitBox.appendChild(commitIdDiv)
+                let commitIdTitle=document.createElement('h5')
+                commitIdTitle.innerHTML=commitId
+                commitBox.appendChild(commitIdTitle)
                 let authorInformation=document.createElement("li")
                 authorInformation.innerHTML = author
                 commitBox.appendChild(authorInformation)
@@ -118,12 +118,12 @@ export default function canvas() {
                 commitBox.id="CommitBox"+divCreationCount;
                 commitBoxIdArray.push(commitBox.id)
                 
-                commitBox.addEventListener("click",divChangeWhenClicked(commitBox.id, commitTime))
+                commitBox.addEventListener("click",divChangeWhenClicked(commitBox.id, commitTime, commitId))
                 parentDiv.appendChild(commitBox)
             };   
         }
         //Function that is called when div is clicked
-        function divChangeWhenClicked(id, commitTime){
+        function divChangeWhenClicked(id, commitTime, commitId){
             return function(){
                 //Change Div shadow
                 for(let i=0; i<commitBoxIdArray.length;i++){
@@ -146,7 +146,8 @@ export default function canvas() {
                     let headCommitMonthDay=headTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
                     let currentHeadTime=new Date(headCommitMonthDay+", "+headCommitYear+" "+headCommitHrMinSec)
                     if(currentHeadTime>currentCommitTime){
-                        console.log("Match")
+                        
+                        document.getElementById("messageBox").innerHTML="git checkout "+String(commitId).match(/[\w]{8}/)
                     }else{
                         console.log("No")
                     }
@@ -176,9 +177,9 @@ export default function canvas() {
                             </Card>
                         </div>    
                     </div>
-                    <div className="ml-5 col" style={{ maxWidth:"200px"}}>
-                        <p>haha</p>
-                    </div>
+                    <Card className="ml-5 col" id="messageBox" style={{ maxWidth:"200px"}}>
+                        
+                    </Card>
                 </div>
             </Container>
         </>
