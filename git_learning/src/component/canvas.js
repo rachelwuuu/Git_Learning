@@ -58,6 +58,7 @@ export default function canvas() {
                     commitBox.style.boxShadow="0 0 12px rgb(0,146,205)"
                     commitBox.style.border= "solid rgb(0,146,205)"
                     commitTitle.innerHTML="Commit (Current HEAD)"
+                    var headId=commitId
                     var headTime=commitTime;
                 }else{
                     commitTitle.innerHTML="Commit"
@@ -117,7 +118,6 @@ export default function canvas() {
                 
                 commitBox.id="CommitBox"+divCreationCount;
                 commitBoxIdArray.push(commitBox.id)
-                
                 commitBox.addEventListener("click",divChangeWhenClicked(commitBox.id, commitTime, commitId))
                 parentDiv.appendChild(commitBox)
             };   
@@ -145,9 +145,15 @@ export default function canvas() {
                     let headCommitHrMinSec=headTime.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/)
                     let headCommitMonthDay=headTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
                     let currentHeadTime=new Date(headCommitMonthDay+", "+headCommitYear+" "+headCommitHrMinSec)
+                    if(commitId!==headId){
+                        document.getElementById("messageBox").innerHTML="git checkout "+String(commitId).match(/[\w]{8}/)  
+                    }else{
+                        document.getElementById("messageBox").innerHTML=""
+                         
+                    }
                     if(currentHeadTime>currentCommitTime){
                         
-                        document.getElementById("messageBox").innerHTML="git checkout "+String(commitId).match(/[\w]{8}/)
+                        
                     }else{
                         console.log("No")
                     }
