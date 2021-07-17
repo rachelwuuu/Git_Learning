@@ -178,7 +178,7 @@ export default function canvas() {
                                     <button type="submit" className="btn btn-primary">Submit</button>
                                 </div>
                             </form>
-                            <Card id="parentDiv" className="d-flex flex-column w-100" style={{overflow:'hidden'}}>
+                            <Card id="parentDiv" className="d-flex flex-column w-100" style={{"overflow-x":"scroll"}}>
 
                             </Card>
                         </div>    
