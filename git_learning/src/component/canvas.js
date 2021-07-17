@@ -146,10 +146,10 @@ export default function canvas() {
                     let headCommitMonthDay=headTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
                     let currentHeadTime=new Date(headCommitMonthDay+", "+headCommitYear+" "+headCommitHrMinSec)
                     if(commitId!==headId){
-                        document.getElementById("messageBox").innerHTML="git checkout "+String(commitId).match(/[\w]{8}/)  
+                        document.getElementById("messageBox").innerHTML=document.getElementById("messageBox").innerHTML+"git checkout "+String(commitId).match(/[\w]{8}/)  
                     }else{
-                        document.getElementById("messageBox").innerHTML=""
-                         
+                        document.getElementById("messageBox").innerHTML="Suggests: "
+                        
                     }
                     if(currentHeadTime>currentCommitTime){
                         
@@ -178,14 +178,16 @@ export default function canvas() {
                                     <button type="submit" className="btn btn-primary">Submit</button>
                                 </div>
                             </form>
-                            <Card id="parentDiv" className="d-flex flex-column w-100">
+                            <Card id="parentDiv" className="d-flex flex-column w-100" style={{overflow:'hidden'}}>
 
                             </Card>
                         </div>    
                     </div>
-                    <Card className="ml-5 col" id="messageBox" style={{ maxWidth:"200px"}}>
-                        
-                    </Card>
+                    <div className="ml-5 col" style={{ maxWidth:"200px"}}>
+                        <Card id="messageBox" className="d-flex flex-column w-100">
+                            <p>Suggests: </p>
+                        </Card>
+                    </div>
                 </div>
             </Container>
         </>
