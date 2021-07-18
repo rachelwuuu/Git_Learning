@@ -104,14 +104,20 @@ export default function canvas() {
                     arrow.setAttributeNS('http://www.w3.org/2000/xmlns/',"xmlns:xlink",'http://www.w3.org/2000/xmlns/')
                     var connectingDiv=document.createElement('div')
                     connectingDiv.id="connectingDiv"+(divCreationCount);
-                    
+                    connectingDiv.className="d-flex flex-column justify-content-center"
                     parentDiv.appendChild(connectingDiv)
                     connectingDiv.appendChild(arrow)
                     arrow.appendChild(defs)
                     defs.appendChild(marker)
                     marker.appendChild(path)
                     arrow.appendChild(polyline)
-                
+                    let plusCommitDiv=document.createElement("Card")
+                    plusCommitDiv.style.border="solid grey"
+                    plusCommitDiv.className="mx-auto"
+                    plusCommitDiv.style.fontSize="50px"
+                    plusCommitDiv.innerHTML="+"
+                    
+                    connectingDiv.appendChild(plusCommitDiv)
                 }
                 
                 divCreationCount+=1;
