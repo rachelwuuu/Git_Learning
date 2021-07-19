@@ -114,9 +114,10 @@ export default function canvas() {
                     let plusCommitDiv=document.createElement("Card")
                     plusCommitDiv.id="plusCommitDiv"+divCreationCount
                     plusCommitDiv.style.border="solid grey"
-                    plusCommitDiv.className="mx-auto"
+                    plusCommitDiv.className="mx-auto d-flex flex-column"
                     plusCommitDiv.style.fontSize="30px"
                     plusCommitDiv.innerHTML="+"
+                    plusCommitDiv.addEventListener("click", chooseWhichToAdd(plusCommitDiv.id))
                     connectingDiv.appendChild(plusCommitDiv)
                     var arrowTail=document.createElementNS('http://www.w3.org/2000/svg',"svg")
                     arrowTail.setAttribute("viewBox","0 0 100 8") //("(x1,y1) (x2,y2)")
@@ -127,7 +128,7 @@ export default function canvas() {
                     tailLine.setAttribute("stroke","black")
                     arrowTail.appendChild(tailLine)
                     connectingDiv.appendChild(arrowTail)
-                    arrowTail.addEventListener("click", chooseWhichToAdd())
+                    
                     
                 }
                 
@@ -178,8 +179,28 @@ export default function canvas() {
             }
         }
             
-        function chooseWhichToAdd(){
-
+        function chooseWhichToAdd(plusCommitDivId){
+            return function(){
+                let plusCommitBox=document.getElementById(plusCommitDivId)
+                let clickInside=plusCommitBox.contains(Event.target)
+                console.log(Event.target)
+                //if(clickInside){
+                    console.log("here")
+                    plusCommitBox.innerHTML=""
+                    let createCommitButton=document.createElement("button")
+                    createCommitButton.className="btn btn-outline-primary"
+                    createCommitButton.innerHTML="Create a new commit"
+                    let createBranchButton=document.createElement("button")
+                    createBranchButton.className="btn btn-outline-primary"
+                    createBranchButton.innerHTML="Create a new branch"
+                    plusCommitBox.appendChild(createCommitButton)
+                    plusCommitBox.appendChild(createBranchButton)
+                //}else{
+                    console.log("hoo")
+                    plusCommitBox.innerHTML="+"
+                //}
+            }
+            
         }
         
     }
