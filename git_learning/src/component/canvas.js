@@ -94,13 +94,13 @@ export default function canvas() {
                     marker.setAttribute("refY", "5")
                     marker.setAttribute("orient", "auto-start-reverse")
                     var polyline=document.createElementNS('http://www.w3.org/2000/svg',"polyline")
-                    polyline.setAttribute("points","50, 2 50, 30")
+                    polyline.setAttribute("points","50, 2 50, 10") //("(x1,y1) (x2,y2)")
                     polyline.setAttribute("fill","none")
                     polyline.setAttribute("stroke","black")
                     polyline.setAttribute("marker-start","url(#arrowHead)")
                     var defs=document.createElementNS('http://www.w3.org/2000/svg','defs')
                     var arrow=document.createElementNS('http://www.w3.org/2000/svg',"svg")
-                    arrow.setAttribute("viewBox","0 0 100 22")
+                    arrow.setAttribute("viewBox","0 0 100 10") //("(x1,y1) (x2,y2)")
                     arrow.setAttributeNS('http://www.w3.org/2000/xmlns/',"xmlns:xlink",'http://www.w3.org/2000/xmlns/')
                     var connectingDiv=document.createElement('div')
                     connectingDiv.id="connectingDiv"+(divCreationCount);
@@ -112,12 +112,23 @@ export default function canvas() {
                     marker.appendChild(path)
                     arrow.appendChild(polyline)
                     let plusCommitDiv=document.createElement("Card")
+                    plusCommitDiv.id="plusCommitDiv"+divCreationCount
                     plusCommitDiv.style.border="solid grey"
                     plusCommitDiv.className="mx-auto"
-                    plusCommitDiv.style.fontSize="50px"
+                    plusCommitDiv.style.fontSize="30px"
                     plusCommitDiv.innerHTML="+"
-                    
                     connectingDiv.appendChild(plusCommitDiv)
+                    var arrowTail=document.createElementNS('http://www.w3.org/2000/svg',"svg")
+                    arrowTail.setAttribute("viewBox","0 0 100 8") //("(x1,y1) (x2,y2)")
+                    arrowTail.setAttributeNS('http://www.w3.org/2000/xmlns/',"xmlns:xlink",'http://www.w3.org/2000/xmlns/')
+                    var tailLine=document.createElementNS('http://www.w3.org/2000/svg',"polyline")
+                    tailLine.setAttribute("points","50, 0 50, 8") 
+                    tailLine.setAttribute("fill","none")
+                    tailLine.setAttribute("stroke","black")
+                    arrowTail.appendChild(tailLine)
+                    connectingDiv.appendChild(arrowTail)
+                    arrowTail.addEventListener("click", chooseWhichToAdd())
+                    
                 }
                 
                 divCreationCount+=1;
@@ -167,7 +178,9 @@ export default function canvas() {
             }
         }
             
-        
+        function chooseWhichToAdd(){
+
+        }
         
     }
     return (
