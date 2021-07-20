@@ -5,13 +5,15 @@ export default function canvas() {
     let divCreationCount=0;
     /////(HEAD can only appear once)
     //Explore what is -0400 in the commit message
+    var commitBoxIdArray=[]
+    var headId
+    var headTime
     function handleSubmit(e){
-        e.preventDefault()
         ///////////1.Separate the text from input box and store them in an array
         var commitInfo=document.getElementById("commit_information").value
         if (commitInfo.startsWith("commit ")){
             if(commitInfo.includes("HEAD")){
-                var commitBoxIdArray=[]
+                
                 var newCommitArray=commitInfo.split(/(?=commit)/g);
                 var validCommitMessage=false;
                 var authorArray=[]
@@ -58,8 +60,8 @@ export default function canvas() {
                     commitBox.style.boxShadow="0 0 12px rgb(0,146,205)"
                     commitBox.style.border= "solid rgb(0,146,205)"
                     commitTitle.innerHTML="Commit (Current HEAD)"
-                    var headId=commitId
-                    var headTime=commitTime;
+                    headId=commitId
+                    headTime=commitTime;
                 }else{
                     commitTitle.innerHTML="Commit"
                     commitBox.style.border= "solid grey";
@@ -111,13 +113,14 @@ export default function canvas() {
                     defs.appendChild(marker)
                     marker.appendChild(path)
                     arrow.appendChild(polyline)
+                   // let plusCommitBox = props => React.createElement("div",{ onClick: props.onClick })
                     let plusCommitDiv=document.createElement("Card")
                     plusCommitDiv.id="plusCommitDiv"+divCreationCount
                     plusCommitDiv.style.border="solid grey"
                     plusCommitDiv.className="mx-auto d-flex flex-column"
                     plusCommitDiv.style.fontSize="30px"
                     plusCommitDiv.innerHTML="+"
-                    plusCommitDiv.addEventListener("click", chooseWhichToAdd(plusCommitDiv.id))
+                    plusCommitDiv.addEventListener("click", chooseWhichToAdd(plusCommitDiv.id,e))
                     connectingDiv.appendChild(plusCommitDiv)
                     var arrowTail=document.createElementNS('http://www.w3.org/2000/svg',"svg")
                     arrowTail.setAttribute("viewBox","0 0 100 8") //("(x1,y1) (x2,y2)")
@@ -140,67 +143,66 @@ export default function canvas() {
                 parentDiv.appendChild(commitBox)
             };   
         }
-        //Function that is called when div is clicked
-        function divChangeWhenClicked(id, commitTime, commitId){
-            return function(){
-                //Change Div shadow
-                for(let i=0; i<commitBoxIdArray.length;i++){
-                    if( document.getElementById(commitBoxIdArray[i]).style.border!=="solid rgb(0, 146, 205)"){
-                        document.getElementById(commitBoxIdArray[i]).style.boxShadow="";
-                    }else{
-                        document.getElementById(commitBoxIdArray[i]).style.boxShadow="0 0 12px rgb(0, 146, 205)"
-                    }
+    }
+    //Function that is called when div is clicked
+    function divChangeWhenClicked(id, commitTime, commitId){
+        return function(){
+            //Change Div shadow
+            for(let i=0; i<commitBoxIdArray.length;i++){
+                if( document.getElementById(commitBoxIdArray[i]).style.border!=="solid rgb(0, 146, 205)"){
+                    document.getElementById(commitBoxIdArray[i]).style.boxShadow="";
+                }else{
+                    document.getElementById(commitBoxIdArray[i]).style.boxShadow="0 0 12px rgb(0, 146, 205)"
                 }
-                document.getElementById(id).style.boxShadow="0 0 12px grey"
-                //Check if commit is commited earlier than head
-                //Ticket: confirm if -0400 is GMT+0400
-                if(commitTime){
-                    let currentCommitYear=commitTime.match(/[0-9]{4}$/)
-                    let currentCommitHrMinSec=commitTime.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/)
-                    let currentCommitMonthDay=commitTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
-                    let currentCommitTime=new Date(currentCommitMonthDay+", "+currentCommitYear+" "+currentCommitHrMinSec)
-                    let headCommitYear=headTime.match(/[0-9]{4}$/)
-                    let headCommitHrMinSec=headTime.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/)
-                    let headCommitMonthDay=headTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
-                    let currentHeadTime=new Date(headCommitMonthDay+", "+headCommitYear+" "+headCommitHrMinSec)
-                    if(commitId!==headId){
-                        document.getElementById("messageBox").innerHTML=document.getElementById("messageBox").innerHTML+"git checkout "+String(commitId).match(/[\w]{8}/)  
-                    }else{
-                        document.getElementById("messageBox").innerHTML="Suggests: "
-                        
-                    }
-                    if(currentHeadTime>currentCommitTime){
-                        
-                        
-                    }else{
-                        console.log("No")
-                    }
+            }
+            document.getElementById(id).style.boxShadow="0 0 12px grey"
+            //Check if commit is commited earlier than head
+            //Ticket: confirm if -0400 is GMT+0400
+            if(commitTime){
+                let currentCommitYear=commitTime.match(/[0-9]{4}$/)
+                let currentCommitHrMinSec=commitTime.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/)
+                let currentCommitMonthDay=commitTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
+                let currentCommitTime=new Date(currentCommitMonthDay+", "+currentCommitYear+" "+currentCommitHrMinSec)
+                let headCommitYear=headTime.match(/[0-9]{4}$/)
+                let headCommitHrMinSec=headTime.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/)
+                let headCommitMonthDay=headTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
+                let currentHeadTime=new Date(headCommitMonthDay+", "+headCommitYear+" "+headCommitHrMinSec)
+                if(commitId!==headId){
+                    document.getElementById("messageBox").innerHTML=document.getElementById("messageBox").innerHTML+"git checkout "+String(commitId).match(/[\w]{8}/)  
+                }else{
+                    document.getElementById("messageBox").innerHTML="Suggests: "
+                    
+                }
+                if(currentHeadTime>currentCommitTime){
+                    
+                    
+                }else{
+                    console.log("No")
                 }
             }
         }
-            
-        function chooseWhichToAdd(plusCommitDivId){
-            return function(){
-                let plusCommitBox=document.getElementById(plusCommitDivId)
-                let clickInside=plusCommitBox.contains(Event.target)
-                console.log(Event.target)
-                //if(clickInside){
-                    console.log("here")
-                    plusCommitBox.innerHTML=""
-                    let createCommitButton=document.createElement("button")
-                    createCommitButton.className="btn btn-outline-primary"
-                    createCommitButton.innerHTML="Create a new commit"
-                    let createBranchButton=document.createElement("button")
-                    createBranchButton.className="btn btn-outline-primary"
-                    createBranchButton.innerHTML="Create a new branch"
-                    plusCommitBox.appendChild(createCommitButton)
-                    plusCommitBox.appendChild(createBranchButton)
-                //}else{
-                    console.log("hoo")
-                    plusCommitBox.innerHTML="+"
-                //}
+    }
+        
+    function chooseWhichToAdd(plusCommitDivId, e){
+        return function(){
+            let plusCommitBox=document.getElementById(plusCommitDivId)
+            let clickInside=plusCommitBox.contains(e.target)
+            console.log(e.target)
+            if(clickInside){
+                console.log("here")
+                plusCommitBox.innerHTML=""
+                /*let createCommitButton=document.createElement("button")
+                createCommitButton.className="btn btn-outline-primary"
+                createCommitButton.innerHTML="Create a new commit"
+                let createBranchButton=document.createElement("button")
+                createBranchButton.className="btn btn-outline-primary"
+                createBranchButton.innerHTML="Create a new branch"
+                plusCommitBox.appendChild(createCommitButton)
+                plusCommitBox.appendChild(createBranchButton)*/
+            }else{
+                console.log("hoo")
+                plusCommitBox.innerHTML="+"
             }
-            
         }
         
     }
@@ -212,12 +214,11 @@ export default function canvas() {
                 <div className="d-flex flex-row" style={{minWidth:"1000px"}}>
                     <div className="col p-0 justify-content-center align-items-center"> 
                         <div className="card d-flex w-75 justify-content-center align-items-between flex-column offset-md-2" style={{maxWidth:"600px", border:"solid grey"}}>
-                            <form onSubmit={handleSubmit}>
+                            
                                 <div className="d-flex flex-column w-100 justify-content-center align-items-center mb-5">
                                     <input id="commit_information" type="text" className="m-3 w-50" rows="3"/>
-                                    <button type="submit" className="btn btn-primary">Submit</button>
+                                    <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
                                 </div>
-                            </form>
                             <Card id="parentDiv" className="d-flex flex-column w-100" style={{"overflow-x":"scroll"}}>
 
                             </Card>
