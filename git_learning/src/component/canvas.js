@@ -8,7 +8,7 @@ export default function canvas() {
     var commitBoxIdArray=[]
     var headId
     var headTime
-    function handleSubmit(e){
+    function handleSubmit(){
         ///////////1.Separate the text from input box and store them in an array
         var commitInfo=document.getElementById("commit_information").value
         if (commitInfo.startsWith("commit ")){
@@ -120,7 +120,7 @@ export default function canvas() {
                     plusCommitDiv.className="mx-auto d-flex flex-column"
                     plusCommitDiv.style.fontSize="30px"
                     plusCommitDiv.innerHTML="+"
-                    plusCommitDiv.addEventListener("click", chooseWhichToAdd(plusCommitDiv.id,e))
+                    plusCommitDiv.addEventListener("click", chooseWhichToAdd(plusCommitDiv.id))
                     connectingDiv.appendChild(plusCommitDiv)
                     var arrowTail=document.createElementNS('http://www.w3.org/2000/svg',"svg")
                     arrowTail.setAttribute("viewBox","0 0 100 8") //("(x1,y1) (x2,y2)")
@@ -183,7 +183,7 @@ export default function canvas() {
         }
     }
         
-    function chooseWhichToAdd(plusCommitDivId, e){
+    function chooseWhichToAdd(plusCommitDivId){
         return function(){
             let plusCommitBox=document.getElementById(plusCommitDivId)
                 plusCommitBox.innerHTML=""
@@ -196,8 +196,8 @@ export default function canvas() {
                 plusCommitBox.appendChild(createCommitButton)
                 plusCommitBox.appendChild(createBranchButton)
         }
-        
     }
+
     return (
         <>  {/* Note: Use the parent div to make the two elements the same width and have spacing at the same time. 
         As align items center in the parent div doesn't allow it to have spacings*/}
@@ -211,7 +211,7 @@ export default function canvas() {
                                     <input id="commit_information" type="text" className="m-3 w-50" rows="3"/>
                                     <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
                                 </div>
-                            <Card id="parentDiv" className="d-flex flex-column w-100" style={{"overflow-x":"scroll"}}>
+                            <Card id="parentDiv" className="d-flex flex-column w-100" style={{"overflowX":"scroll"}}>
 
                             </Card>
                         </div>    
