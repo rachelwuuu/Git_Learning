@@ -186,23 +186,15 @@ export default function canvas() {
     function chooseWhichToAdd(plusCommitDivId, e){
         return function(){
             let plusCommitBox=document.getElementById(plusCommitDivId)
-            let clickInside=plusCommitBox.contains(e.target)
-            console.log(e.target)
-            if(clickInside){
-                console.log("here")
                 plusCommitBox.innerHTML=""
-                /*let createCommitButton=document.createElement("button")
+                let createCommitButton=document.createElement("button")
                 createCommitButton.className="btn btn-outline-primary"
                 createCommitButton.innerHTML="Create a new commit"
                 let createBranchButton=document.createElement("button")
                 createBranchButton.className="btn btn-outline-primary"
                 createBranchButton.innerHTML="Create a new branch"
                 plusCommitBox.appendChild(createCommitButton)
-                plusCommitBox.appendChild(createBranchButton)*/
-            }else{
-                console.log("hoo")
-                plusCommitBox.innerHTML="+"
-            }
+                plusCommitBox.appendChild(createBranchButton)
         }
         
     }
