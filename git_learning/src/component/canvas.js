@@ -113,15 +113,25 @@ export default function canvas() {
                     defs.appendChild(marker)
                     marker.appendChild(path)
                     arrow.appendChild(polyline)
-                   // let plusCommitBox = props => React.createElement("div",{ onClick: props.onClick })
-                    let plusCommitDiv=document.createElement("Card")
-                    plusCommitDiv.id="plusCommitDiv"+divCreationCount
-                    plusCommitDiv.style.border="solid grey"
-                    plusCommitDiv.className="mx-auto d-flex flex-column"
-                    plusCommitDiv.style.fontSize="30px"
-                    plusCommitDiv.innerHTML="+"
-                    plusCommitDiv.addEventListener("click", chooseWhichToAdd(plusCommitDiv.id))
-                    connectingDiv.appendChild(plusCommitDiv)
+                    //plusBox
+                    let plusBoxDiv=document.createElement("Card")
+                    plusBoxDiv.id="plusCommitDiv"+divCreationCount
+                    plusBoxDiv.style.border="solid grey"
+                    plusBoxDiv.className="mx-auto d-flex flex-column"
+                    plusBoxDiv.style.fontSize="30px"
+                    plusBoxDiv.innerHTML="+"
+                    plusBoxDiv.addEventListener("click", chooseWhichToAdd(plusBoxDiv.id))
+                    let createCommitButton=document.createElement("button")
+                    createCommitButton.className="btn btn-outline-primary"
+                    createCommitButton.innerHTML="Create a new commit"
+                    createCommitButton.style.display="none"
+                    let createBranchButton=document.createElement("button")
+                    createBranchButton.className="btn btn-outline-primary"
+                    createBranchButton.innerHTML="Create a new branch"
+                    createBranchButton.style.display="none"
+                    plusBoxDiv.appendChild(createCommitButton)
+                    plusBoxDiv.appendChild(createBranchButton)
+                    connectingDiv.appendChild(plusBoxDiv)
                     var arrowTail=document.createElementNS('http://www.w3.org/2000/svg',"svg")
                     arrowTail.setAttribute("viewBox","0 0 100 8") //("(x1,y1) (x2,y2)")
                     arrowTail.setAttributeNS('http://www.w3.org/2000/xmlns/',"xmlns:xlink",'http://www.w3.org/2000/xmlns/')
@@ -185,7 +195,7 @@ export default function canvas() {
         
     function chooseWhichToAdd(plusCommitDivId){
         return function(){
-            let plusCommitBox=document.getElementById(plusCommitDivId)
+            /*let plusCommitBox=document.getElementById(plusCommitDivId)
                 plusCommitBox.innerHTML=""
                 let createCommitButton=document.createElement("button")
                 createCommitButton.className="btn btn-outline-primary"
@@ -194,7 +204,7 @@ export default function canvas() {
                 createBranchButton.className="btn btn-outline-primary"
                 createBranchButton.innerHTML="Create a new branch"
                 plusCommitBox.appendChild(createCommitButton)
-                plusCommitBox.appendChild(createBranchButton)
+                plusCommitBox.appendChild(createBranchButton)*/
         }
     }
 
