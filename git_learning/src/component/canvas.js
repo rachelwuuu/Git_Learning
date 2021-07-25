@@ -6,6 +6,7 @@ export default function canvas() {
     /////(HEAD can only appear once)
     //Explore what is -0400 in the commit message
     var commitBoxIdArray=[]
+    var plusBoxMap={}
     var headId
     var headTime
     function handleSubmit(){
@@ -115,23 +116,35 @@ export default function canvas() {
                     arrow.appendChild(polyline)
                     //plusBox
                     let plusBoxDiv=document.createElement("Card")
-                    plusBoxDiv.id="plusCommitDiv"+divCreationCount
+                    plusBoxDiv.id="plusBoxDiv"+divCreationCount
                     plusBoxDiv.style.border="solid grey"
-                    plusBoxDiv.className="mx-auto d-flex flex-column"
+                    plusBoxDiv.className="m-auto d-flex flex-column"
                     plusBoxDiv.style.fontSize="30px"
-                    plusBoxDiv.innerHTML="+"
+                    let plusSymbol=document.createElement("P")
+                    plusSymbol.className="my-0"
+                    plusSymbol.id="plusSymbol"+divCreationCount
+                    plusSymbol.innerHTML="+"
+                    plusBoxDiv.appendChild(plusSymbol)
                     plusBoxDiv.addEventListener("click", chooseWhichToAdd(plusBoxDiv.id))
                     let createCommitButton=document.createElement("button")
+                    createCommitButton.id="createCommitButton"+divCreationCount
                     createCommitButton.className="btn btn-outline-primary"
                     createCommitButton.innerHTML="Create a new commit"
                     createCommitButton.style.display="none"
                     let createBranchButton=document.createElement("button")
+                    createBranchButton.id="createBranchButton"+divCreationCount
                     createBranchButton.className="btn btn-outline-primary"
                     createBranchButton.innerHTML="Create a new branch"
                     createBranchButton.style.display="none"
                     plusBoxDiv.appendChild(createCommitButton)
                     plusBoxDiv.appendChild(createBranchButton)
                     connectingDiv.appendChild(plusBoxDiv)
+                    const plusBox={}
+                    plusBox.id=plusBoxDiv.id
+                    plusBox.createCommitButtonId=createCommitButton.id
+                    plusBox.createBranchButtonId=createBranchButton.id
+                    plusBox.plusSymbolId=plusSymbol.id
+                    plusBoxMap[plusBox.id]=plusBox
                     var arrowTail=document.createElementNS('http://www.w3.org/2000/svg',"svg")
                     arrowTail.setAttribute("viewBox","0 0 100 8") //("(x1,y1) (x2,y2)")
                     arrowTail.setAttributeNS('http://www.w3.org/2000/xmlns/',"xmlns:xlink",'http://www.w3.org/2000/xmlns/')
@@ -195,16 +208,10 @@ export default function canvas() {
         
     function chooseWhichToAdd(plusCommitDivId){
         return function(){
-            /*let plusCommitBox=document.getElementById(plusCommitDivId)
-                plusCommitBox.innerHTML=""
-                let createCommitButton=document.createElement("button")
-                createCommitButton.className="btn btn-outline-primary"
-                createCommitButton.innerHTML="Create a new commit"
-                let createBranchButton=document.createElement("button")
-                createBranchButton.className="btn btn-outline-primary"
-                createBranchButton.innerHTML="Create a new branch"
-                plusCommitBox.appendChild(createCommitButton)
-                plusCommitBox.appendChild(createBranchButton)*/
+            let plusCommitBox=document.getElementById(plusCommitDivId)
+            document.getElementById(plusBoxMap[plusCommitDivId].plusSymbolId).innerHTML=""
+            document.getElementById(plusBoxMap[plusCommitDivId].createBranchButtonId).style.display="block"
+            console.log(plusBoxMap[plusCommitDivId].createBranchButtonId)
         }
     }
 
