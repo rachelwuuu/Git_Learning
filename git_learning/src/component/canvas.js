@@ -119,31 +119,53 @@ export default function canvas() {
                     plusBoxDiv.id="plusBoxDiv"+divCreationCount
                     plusBoxDiv.style.border="solid grey"
                     plusBoxDiv.className="m-auto d-flex flex-column"
-                    plusBoxDiv.style.fontSize="30px"
-                    let plusSymbol=document.createElement("P")
+                    let plusSymbol=document.createElement("h1")
                     plusSymbol.className="my-0"
                     plusSymbol.id="plusSymbol"+divCreationCount
                     plusSymbol.innerHTML="+"
                     plusBoxDiv.appendChild(plusSymbol)
-                    plusBoxDiv.addEventListener("click", chooseWhichToAdd(plusBoxDiv.id))
+                    plusSymbol.addEventListener("click", chooseWhichToAdd(plusBoxDiv.id))
+                    let commitDecorationBox=document.createElement("div")
+                    commitDecorationBox.style.border="solid purple"
+                    let titledLines=document.createElement("svg")
+                    
+                    commitDecorationBox.appendChild(titledLines)
+                    let commitDecorationText=document.createElement("P")
+                    commitDecorationText.style.fontSize="12px"
+                    commitDecorationText.style.border="solid purple"
+                    commitDecorationText.style.borderRadius="8px"
+                    commitDecorationText.innerHTML="New Commit"
+                    commitDecorationBox.appendChild(commitDecorationText)
+                    plusBoxDiv.appendChild(commitDecorationBox)
                     let createCommitButton=document.createElement("button")
                     createCommitButton.id="createCommitButton"+divCreationCount
                     createCommitButton.className="btn btn-outline-primary"
                     createCommitButton.innerHTML="Create a new commit"
                     createCommitButton.style.display="none"
+                    createCommitButton.style.borderRadius="0"
+                    createCommitButton.addEventListener("click",createNewCommit(plusBoxDiv.id))
                     let createBranchButton=document.createElement("button")
                     createBranchButton.id="createBranchButton"+divCreationCount
                     createBranchButton.className="btn btn-outline-primary"
                     createBranchButton.innerHTML="Create a new branch"
                     createBranchButton.style.display="none"
+                    createBranchButton.style.borderRadius="0"
+                    let backButton=document.createElement("button")
+                    backButton.id="backButton"+divCreationCount
+                    backButton.className="btn btn-outline-primary"
+                    backButton.innerHTML="<--Go Back"
+                    backButton.style.display="none"
+                    backButton.style.borderRadius="0"
                     plusBoxDiv.appendChild(createCommitButton)
                     plusBoxDiv.appendChild(createBranchButton)
+                    plusBoxDiv.appendChild(backButton)
                     connectingDiv.appendChild(plusBoxDiv)
                     const plusBox={}
                     plusBox.id=plusBoxDiv.id
                     plusBox.createCommitButtonId=createCommitButton.id
                     plusBox.createBranchButtonId=createBranchButton.id
                     plusBox.plusSymbolId=plusSymbol.id
+                    plusBox.backButtonId=backButton.id
                     plusBoxMap[plusBox.id]=plusBox
                     var arrowTail=document.createElementNS('http://www.w3.org/2000/svg',"svg")
                     arrowTail.setAttribute("viewBox","0 0 100 8") //("(x1,y1) (x2,y2)")
@@ -208,13 +230,20 @@ export default function canvas() {
         
     function chooseWhichToAdd(plusCommitDivId){
         return function(){
-            let plusCommitBox=document.getElementById(plusCommitDivId)
             document.getElementById(plusBoxMap[plusCommitDivId].plusSymbolId).innerHTML=""
+            document.getElementById(plusBoxMap[plusCommitDivId].createCommitButtonId).style.display="block"
             document.getElementById(plusBoxMap[plusCommitDivId].createBranchButtonId).style.display="block"
-            console.log(plusBoxMap[plusCommitDivId].createBranchButtonId)
+            document.getElementById(plusBoxMap[plusCommitDivId].backButtonId).style.display="block"
         }
     }
 
+    function createNewCommit(plusCommitDivId){
+        return function(){
+            
+            document.getElementById(plusBoxMap[plusCommitDivId].createCommitButtonId).style.display="none"
+            document.getElementById(plusBoxMap[plusCommitDivId].createBranchButtonId).style.display="none"
+        }
+    }
     return (
         <>  {/* Note: Use the parent div to make the two elements the same width and have spacing at the same time. 
         As align items center in the parent div doesn't allow it to have spacings*/}
