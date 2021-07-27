@@ -127,9 +127,17 @@ export default function canvas() {
                     plusSymbol.addEventListener("click", chooseWhichToAdd(plusBoxDiv.id))
                     let commitDecorationBox=document.createElement("div")
                     commitDecorationBox.style.border="solid purple"
-                    let titledLines=document.createElement("svg")
-                    
-                    commitDecorationBox.appendChild(titledLines)
+                    commitDecorationBox.style.display="none"
+                    commitDecorationBox.style.backgroundImage= "url("+"'data:image/svg+xml;charset=UTF-8,%3csvg viewBox='0 0 5 5' xmlns:xlink='http://www.w3.org/2000/xmlns/'%3e%3cpolyline points='0, 0 2, 2' fill='none' stroke='black'%3e%3c/polyline%3e%3c/svg%3e'"+")"
+                    /*let titledLines=document.createElementNS('http://www.w3.org/2000/svg',"svg")
+                    titledLines.setAttribute("viewBox","0 0 5 5")
+                    titledLines.setAttributeNS('http://www.w3.org/2000/xmlns/',"xmlns:xlink",'http://www.w3.org/2000/xmlns/')
+                    let line=document.createElementNS('http://www.w3.org/2000/svg',"polyline")
+                    line.setAttribute("points","0, 0 5, 5") 
+                    line.setAttribute("fill","none")
+                    line.setAttribute("stroke","black")
+                    titledLines.appendChild(line)
+                    commitDecorationBox.appendChild(titledLines)*/
                     let commitDecorationText=document.createElement("P")
                     commitDecorationText.style.fontSize="12px"
                     commitDecorationText.style.border="solid purple"
