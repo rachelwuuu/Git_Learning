@@ -1,6 +1,7 @@
 import React from 'react'
 import {Card} from "react-bootstrap"
 import {Container} from "react-bootstrap"
+import titledLinesSvg from "../svg/titledLines.svg"
 export default function canvas() {
     let divCreationCount=0;
     /////(HEAD can only appear once)
@@ -126,20 +127,13 @@ export default function canvas() {
                     plusBoxDiv.appendChild(plusSymbol)
                     plusSymbol.addEventListener("click", chooseWhichToAdd(plusBoxDiv.id))
                     let commitDecorationBox=document.createElement("div")
+                    commitDecorationBox.id="commitDecorationBox"+divCreationCount
                     commitDecorationBox.style.border="solid purple"
                     commitDecorationBox.style.display="none"
-                    commitDecorationBox.style.backgroundImage= "url("+"'data:image/svg+xml;charset=UTF-8,%3csvg viewBox='0 0 5 5' xmlns:xlink='http://www.w3.org/2000/xmlns/'%3e%3cpolyline points='0, 0 2, 2' fill='none' stroke='black'%3e%3c/polyline%3e%3c/svg%3e'"+")"
-                    /*let titledLines=document.createElementNS('http://www.w3.org/2000/svg',"svg")
-                    titledLines.setAttribute("viewBox","0 0 5 5")
-                    titledLines.setAttributeNS('http://www.w3.org/2000/xmlns/',"xmlns:xlink",'http://www.w3.org/2000/xmlns/')
-                    let line=document.createElementNS('http://www.w3.org/2000/svg',"polyline")
-                    line.setAttribute("points","0, 0 5, 5") 
-                    line.setAttribute("fill","none")
-                    line.setAttribute("stroke","black")
-                    titledLines.appendChild(line)
-                    commitDecorationBox.appendChild(titledLines)*/
+                    commitDecorationBox.style.backgroundImage="url("+titledLinesSvg+")"
                     let commitDecorationText=document.createElement("P")
                     commitDecorationText.style.fontSize="12px"
+                    commitDecorationText.style.backgroundColor="white"
                     commitDecorationText.style.border="solid purple"
                     commitDecorationText.style.borderRadius="8px"
                     commitDecorationText.innerHTML="New Commit"
@@ -174,6 +168,7 @@ export default function canvas() {
                     plusBox.createBranchButtonId=createBranchButton.id
                     plusBox.plusSymbolId=plusSymbol.id
                     plusBox.backButtonId=backButton.id
+                    plusBox.commitDecorationBoxId=commitDecorationBox.id
                     plusBoxMap[plusBox.id]=plusBox
                     var arrowTail=document.createElementNS('http://www.w3.org/2000/svg',"svg")
                     arrowTail.setAttribute("viewBox","0 0 100 8") //("(x1,y1) (x2,y2)")
@@ -247,7 +242,7 @@ export default function canvas() {
 
     function createNewCommit(plusCommitDivId){
         return function(){
-            
+            document.getElementById(plusBoxMap[plusCommitDivId].commitDecorationBoxId).style.display="block"
             document.getElementById(plusBoxMap[plusCommitDivId].createCommitButtonId).style.display="none"
             document.getElementById(plusBoxMap[plusCommitDivId].createBranchButtonId).style.display="none"
         }
@@ -256,11 +251,9 @@ export default function canvas() {
         <>  {/* Note: Use the parent div to make the two elements the same width and have spacing at the same time. 
         As align items center in the parent div doesn't allow it to have spacings*/}
             <Container className="d-flex justify-content-center align-items-center" style={{minHeight:"100vh",minWidth:"100vw"}}>
-                
                 <div className="d-flex flex-row" style={{minWidth:"1000px"}}>
                     <div className="col p-0 justify-content-center align-items-center"> 
                         <div className="card d-flex w-75 justify-content-center align-items-between flex-column offset-md-2" style={{maxWidth:"600px", border:"solid grey"}}>
-                            
                                 <div className="d-flex flex-column w-100 justify-content-center align-items-center mb-5">
                                     <input id="commit_information" type="text" className="m-3 w-50" rows="3"/>
                                     <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
