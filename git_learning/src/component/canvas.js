@@ -161,6 +161,7 @@ export default function canvas() {
                     backButton.innerHTML="<--Go Back"
                     backButton.style.display="none"
                     backButton.style.borderRadius="0"
+                    backButton.addEventListener("click",goBack(plusBoxDiv.id))
                     plusBoxDiv.appendChild(createCommitButton)
                     plusBoxDiv.appendChild(createBranchButton)
                     plusBoxDiv.appendChild(backButton)
@@ -251,6 +252,23 @@ export default function canvas() {
             document.getElementById(plusBoxMap[plusCommitDivId].commitDecorationTextId).style.verticalAlign="middle"
             document.getElementById(plusBoxMap[plusCommitDivId].createCommitButtonId).style.display="none"
             document.getElementById(plusBoxMap[plusCommitDivId].createBranchButtonId).style.display="none"
+        }
+    }
+    function goBack(plusBoxDivId){
+        return function(){
+            
+            if(document.getElementById(plusBoxMap[plusBoxDivId].commitDecorationBoxId).style.display!=="none"){
+                document.getElementById(plusBoxMap[plusBoxDivId].commitDecorationBoxId).style.display="none"
+                document.getElementById(plusBoxMap[plusBoxDivId].createCommitButtonId).style.display="block"
+                document.getElementById(plusBoxMap[plusBoxDivId].createBranchButtonId).style.display="block"
+                document.getElementById(plusBoxMap[plusBoxDivId].backButtonId).style.display="block"
+            }else if(document.getElementById(plusBoxMap[plusBoxDivId].createCommitButtonId).style.display!=="none"||
+            document.getElementById(plusBoxMap[plusBoxDivId].createBranchButtonId).style.display!=="none"){
+                document.getElementById(plusBoxMap[plusBoxDivId].createCommitButtonId).style.display="none"
+                document.getElementById(plusBoxMap[plusBoxDivId].createBranchButtonId).style.display="none"
+                document.getElementById(plusBoxMap[plusBoxDivId].backButtonId).style.display="none"
+                document.getElementById(plusBoxMap[plusBoxDivId].plusSymbolId).innerHTML="+"
+            }
         }
     }
     return (
