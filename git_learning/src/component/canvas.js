@@ -130,9 +130,12 @@ export default function canvas() {
                     commitDecorationBox.id="commitDecorationBox"+divCreationCount
                     commitDecorationBox.style.border="solid purple"
                     commitDecorationBox.style.display="none"
+                    commitDecorationBox.className="p-3"
                     commitDecorationBox.style.backgroundImage="url("+titledLinesSvg+")"
                     let commitDecorationText=document.createElement("P")
+                    commitDecorationText.id="commitDecorationText"+divCreationCount
                     commitDecorationText.style.fontSize="12px"
+                    
                     commitDecorationText.style.backgroundColor="white"
                     commitDecorationText.style.border="solid purple"
                     commitDecorationText.style.borderRadius="8px"
@@ -169,6 +172,7 @@ export default function canvas() {
                     plusBox.plusSymbolId=plusSymbol.id
                     plusBox.backButtonId=backButton.id
                     plusBox.commitDecorationBoxId=commitDecorationBox.id
+                    plusBox.commitDecorationTextId=commitDecorationText.id
                     plusBoxMap[plusBox.id]=plusBox
                     var arrowTail=document.createElementNS('http://www.w3.org/2000/svg',"svg")
                     arrowTail.setAttribute("viewBox","0 0 100 8") //("(x1,y1) (x2,y2)")
@@ -242,7 +246,9 @@ export default function canvas() {
 
     function createNewCommit(plusCommitDivId){
         return function(){
-            document.getElementById(plusBoxMap[plusCommitDivId].commitDecorationBoxId).style.display="block"
+            document.getElementById(plusBoxMap[plusCommitDivId].commitDecorationBoxId).style.display="table"
+            document.getElementById(plusBoxMap[plusCommitDivId].commitDecorationTextId).style.display="table-cell"
+            document.getElementById(plusBoxMap[plusCommitDivId].commitDecorationTextId).style.verticalAlign="middle"
             document.getElementById(plusBoxMap[plusCommitDivId].createCommitButtonId).style.display="none"
             document.getElementById(plusBoxMap[plusCommitDivId].createBranchButtonId).style.display="none"
         }
