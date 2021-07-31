@@ -10,9 +10,26 @@ export default function canvas() {
     var plusBoxMap={}
     var headId
     var headTime
+    var stepNumber=0
+    var steps
     function handleSubmit(){
         ///////////1.Separate the text from input box and store them in an array
         var commitInfo=document.getElementById("commit_information").value
+        let createCommitButton=document.createElement("button")
+        createCommitButton.id="createCommitButton"+divCreationCount
+        createCommitButton.className="btn btn-outline-primary"
+        createCommitButton.innerHTML="Create a new commit"
+        createCommitButton.style.display="none"
+        createCommitButton.style.borderRadius="0"
+        //createCommitButton.addEventListener("click",createNewCommit(plusBoxDiv.id))
+        let createBranchButton=document.createElement("button")
+        createBranchButton.id="createBranchButton"+divCreationCount
+        createBranchButton.className="btn btn-outline-primary"
+        createBranchButton.innerHTML="Create a new branch"
+        createBranchButton.style.display="none"
+        createBranchButton.style.borderRadius="0"
+        document.getElementById("messageBox").appendChild(createCommitButton)
+
         if (commitInfo.startsWith("commit ")){
             if(commitInfo.includes("HEAD")){
                 
@@ -142,7 +159,7 @@ export default function canvas() {
                     commitDecorationText.innerHTML="New Commit"
                     commitDecorationBox.appendChild(commitDecorationText)
                     plusBoxDiv.appendChild(commitDecorationBox)
-                    let createCommitButton=document.createElement("button")
+                    /*let createCommitButton=document.createElement("button")
                     createCommitButton.id="createCommitButton"+divCreationCount
                     createCommitButton.className="btn btn-outline-primary"
                     createCommitButton.innerHTML="Create a new commit"
@@ -154,7 +171,7 @@ export default function canvas() {
                     createBranchButton.className="btn btn-outline-primary"
                     createBranchButton.innerHTML="Create a new branch"
                     createBranchButton.style.display="none"
-                    createBranchButton.style.borderRadius="0"
+                    createBranchButton.style.borderRadius="0"*/
                     let backButton=document.createElement("button")
                     backButton.id="backButton"+divCreationCount
                     backButton.className="btn btn-outline-primary"
@@ -162,14 +179,14 @@ export default function canvas() {
                     backButton.style.display="none"
                     backButton.style.borderRadius="0"
                     backButton.addEventListener("click",goBack(plusBoxDiv.id))
-                    plusBoxDiv.appendChild(createCommitButton)
-                    plusBoxDiv.appendChild(createBranchButton)
+                    //plusBoxDiv.appendChild(createCommitButton)
+                    //plusBoxDiv.appendChild(createBranchButton)
                     plusBoxDiv.appendChild(backButton)
                     connectingDiv.appendChild(plusBoxDiv)
                     const plusBox={}
                     plusBox.id=plusBoxDiv.id
-                    plusBox.createCommitButtonId=createCommitButton.id
-                    plusBox.createBranchButtonId=createBranchButton.id
+                    //plusBox.createCommitButtonId=createCommitButton.id
+                    //plusBox.createBranchButtonId=createBranchButton.id
                     plusBox.plusSymbolId=plusSymbol.id
                     plusBox.backButtonId=backButton.id
                     plusBox.commitDecorationBoxId=commitDecorationBox.id
@@ -247,6 +264,12 @@ export default function canvas() {
 
     function createNewCommit(plusCommitDivId){
         return function(){
+            if(plusCommitDivId!==headId){//extract the numbers at the end
+                document.getElementById("messageBox").innerHTML=document.getElementById("messageBox").innerHTML+"git revert "+String(plusCommitDivId).match(/[\w]{8}/)  
+            }else{
+                document.getElementById("messageBox").innerHTML='Suggests: $git add . $git commit -m "YourMessage" $git push'
+                
+            }
             document.getElementById(plusBoxMap[plusCommitDivId].commitDecorationBoxId).style.display="table"
             document.getElementById(plusBoxMap[plusCommitDivId].commitDecorationTextId).style.display="table-cell"
             document.getElementById(plusBoxMap[plusCommitDivId].commitDecorationTextId).style.verticalAlign="middle"
