@@ -6,39 +6,41 @@ export default function canvas() {
     let divCreationCount=0;
     /////(HEAD can only appear once)
     //Explore what is -0400 in the commit message
-    var commitBoxIdArray=[]
     var plusBoxMap={}
     var headId
     var headTime
     var stepNumber=0
     var steps
+    var clickedItemId;
+    var commitArray=[];
     function handleSubmit(){
         ///////////1.Separate the text from input box and store them in an array
         var commitInfo=document.getElementById("commit_information").value
+        let messageTextBox=document.createElement("card")
+        messageTextBox.id="messageTextBox"
+        let clickDivOptionBox=document.createElement("card")
+        clickDivOptionBox.style.display="none"
+        clickDivOptionBox.id="clickDivOptionBox"
         let createCommitButton=document.createElement("button")
-        createCommitButton.id="createCommitButton"+divCreationCount
+        createCommitButton.id="createCommitButton"
         createCommitButton.className="btn btn-outline-primary"
         createCommitButton.innerHTML="Create a new commit"
-        createCommitButton.style.display="none"
         createCommitButton.style.borderRadius="0"
         //createCommitButton.addEventListener("click",createNewCommit(plusBoxDiv.id))
         let createBranchButton=document.createElement("button")
-        createBranchButton.id="createBranchButton"+divCreationCount
+        createBranchButton.id="createBranchButton"
         createBranchButton.className="btn btn-outline-primary"
         createBranchButton.innerHTML="Create a new branch"
-        createBranchButton.style.display="none"
         createBranchButton.style.borderRadius="0"
-        document.getElementById("messageBox").appendChild(createCommitButton)
-
+        document.getElementById("messageBox").appendChild(clickDivOptionBox)
+        document.getElementById("messageBox").appendChild(messageTextBox)
+        clickDivOptionBox.appendChild(createCommitButton)
+        clickDivOptionBox.appendChild(createBranchButton)
         if (commitInfo.startsWith("commit ")){
             if(commitInfo.includes("HEAD")){
                 
                 var newCommitArray=commitInfo.split(/(?=commit)/g);
                 var validCommitMessage=false;
-                var authorArray=[]
-                var timeArray=[]
-                var commitMessageArray=[]
-                var commitIdArray=[]
                 //////////////2. Loop through the array and draw the elements dynamically on the website
                 for(let p=0;p<newCommitArray.length;p++) {
                     let elementCheck=newCommitArray[p];
@@ -47,13 +49,18 @@ export default function canvas() {
                     let patternOfGitCommitId=/[\w]{40}/
                     if(patternOfGitCommitId.test(commitId) && elementCheck.charAt(47)===" "){
                         validCommitMessage=true;
-                        commitIdArray.push(commitId);
                         let Author=elementCheck.split(/(?=Author: )/).pop().split(/(?= Date)/)[0].trim()
-                        authorArray.push(Author)
+                        
                         let commitTime=elementCheck.split(/(?=(Date: ))/).pop().split(/(?= -)/)[0].trim()
-                        timeArray.push(commitTime)
                         let commitMessage=elementCheck.split(/-(\d){4} /).pop().trim()
-                        commitMessageArray.push(commitMessage)
+                        const commitInfo={}
+                        commitInfo.id=p+1
+                        commitInfo.commitId=commitId
+                        commitInfo.commitTime=commitTime
+                        commitInfo.commitMessage=commitMessage
+                        
+                        commitInfo.commitAuthor=Author
+                        commitArray.push(commitInfo)
                     }else{
                         console.log("Please enter a commit message with a valid commit id.")
                         validCommitMessage=false;
@@ -65,11 +72,11 @@ export default function canvas() {
             }
         }
         if(validCommitMessage){
-            for(let k=0;k<newCommitArray.length;k++) {
-                let commitId=commitIdArray[k];
-                let author = authorArray[k];
-                let commitMessage = commitMessageArray[k];
-                let commitTime = timeArray[k];
+            for(let k=0;k<commitArray.length;k++) {
+                let commitId=commitArray[k].commitId;
+                let author = commitArray[k].commitAuthor;
+                let commitMessage = commitArray[k].commitMessage;
+                let commitTime = commitArray[k].commitTime;
                 let commitBox=document.createElement('div')
                 commitBox.className="p-5 w-75 align-self-center"
                 let parentDiv=document.getElementById("parentDiv")
@@ -132,8 +139,9 @@ export default function canvas() {
                     defs.appendChild(marker)
                     marker.appendChild(path)
                     arrow.appendChild(polyline)
+                    
                     //plusBox
-                    let plusBoxDiv=document.createElement("Card")
+                    /*let plusBoxDiv=document.createElement("Card")
                     plusBoxDiv.id="plusBoxDiv"+divCreationCount
                     plusBoxDiv.style.border="solid grey"
                     plusBoxDiv.className="m-auto d-flex flex-column"
@@ -142,23 +150,23 @@ export default function canvas() {
                     plusSymbol.id="plusSymbol"+divCreationCount
                     plusSymbol.innerHTML="+"
                     plusBoxDiv.appendChild(plusSymbol)
-                    plusSymbol.addEventListener("click", chooseWhichToAdd(plusBoxDiv.id))
+                    plusSymbol.addEventListener("click", chooseWhichToAdd(plusBoxDiv.id))*/
                     let commitDecorationBox=document.createElement("div")
                     commitDecorationBox.id="commitDecorationBox"+divCreationCount
                     commitDecorationBox.style.border="solid purple"
                     commitDecorationBox.style.display="none"
-                    commitDecorationBox.className="p-3"
+                    //commitDecorationBox.className="p-3"
                     commitDecorationBox.style.backgroundImage="url("+titledLinesSvg+")"
                     let commitDecorationText=document.createElement("P")
                     commitDecorationText.id="commitDecorationText"+divCreationCount
                     commitDecorationText.style.fontSize="12px"
-                    
                     commitDecorationText.style.backgroundColor="white"
                     commitDecorationText.style.border="solid purple"
                     commitDecorationText.style.borderRadius="8px"
                     commitDecorationText.innerHTML="New Commit"
                     commitDecorationBox.appendChild(commitDecorationText)
-                    plusBoxDiv.appendChild(commitDecorationBox)
+                    connectingDiv.appendChild(commitDecorationBox)
+                    //plusBoxDiv.appendChild(commitDecorationBox)
                     /*let createCommitButton=document.createElement("button")
                     createCommitButton.id="createCommitButton"+divCreationCount
                     createCommitButton.className="btn btn-outline-primary"
@@ -171,7 +179,7 @@ export default function canvas() {
                     createBranchButton.className="btn btn-outline-primary"
                     createBranchButton.innerHTML="Create a new branch"
                     createBranchButton.style.display="none"
-                    createBranchButton.style.borderRadius="0"*/
+                    createBranchButton.style.borderRadius="0"
                     let backButton=document.createElement("button")
                     backButton.id="backButton"+divCreationCount
                     backButton.className="btn btn-outline-primary"
@@ -179,19 +187,19 @@ export default function canvas() {
                     backButton.style.display="none"
                     backButton.style.borderRadius="0"
                     backButton.addEventListener("click",goBack(plusBoxDiv.id))
-                    //plusBoxDiv.appendChild(createCommitButton)
-                    //plusBoxDiv.appendChild(createBranchButton)
+                    plusBoxDiv.appendChild(createCommitButton)
+                    plusBoxDiv.appendChild(createBranchButton)
                     plusBoxDiv.appendChild(backButton)
                     connectingDiv.appendChild(plusBoxDiv)
                     const plusBox={}
                     plusBox.id=plusBoxDiv.id
-                    //plusBox.createCommitButtonId=createCommitButton.id
-                    //plusBox.createBranchButtonId=createBranchButton.id
+                    plusBox.createCommitButtonId=createCommitButton.id
+                    plusBox.createBranchButtonId=createBranchButton.id
                     plusBox.plusSymbolId=plusSymbol.id
                     plusBox.backButtonId=backButton.id
                     plusBox.commitDecorationBoxId=commitDecorationBox.id
                     plusBox.commitDecorationTextId=commitDecorationText.id
-                    plusBoxMap[plusBox.id]=plusBox
+                    plusBoxMap[plusBox.id]=plusBox*/
                     var arrowTail=document.createElementNS('http://www.w3.org/2000/svg',"svg")
                     arrowTail.setAttribute("viewBox","0 0 100 8") //("(x1,y1) (x2,y2)")
                     arrowTail.setAttributeNS('http://www.w3.org/2000/xmlns/',"xmlns:xlink",'http://www.w3.org/2000/xmlns/')
@@ -206,26 +214,26 @@ export default function canvas() {
                 }
                 
                 divCreationCount+=1;
-                
                 commitBox.id="CommitBox"+divCreationCount;
-                commitBoxIdArray.push(commitBox.id)
-                commitBox.addEventListener("click",divChangeWhenClicked(commitBox.id, commitTime, commitId))
+                commitBox.addEventListener("click",divChangeWhenClicked(commitArray[k].id, commitTime))
                 parentDiv.appendChild(commitBox)
             };   
         }
     }
     //Function that is called when div is clicked
-    function divChangeWhenClicked(id, commitTime, commitId){
+    function divChangeWhenClicked(id, commitTime){
         return function(){
             //Change Div shadow
-            for(let i=0; i<commitBoxIdArray.length;i++){
-                if( document.getElementById(commitBoxIdArray[i]).style.border!=="solid rgb(0, 146, 205)"){
-                    document.getElementById(commitBoxIdArray[i]).style.boxShadow="";
+            let commitId=commitArray[id-1].commitId
+            clickedItemId=id;
+            for(let i=0; i<commitArray.length;i++){
+                if( document.getElementById("CommitBox"+commitArray[i].id).style.border!=="solid rgb(0, 146, 205)"){
+                    document.getElementById("CommitBox"+commitArray[i].id).style.boxShadow="";
                 }else{
-                    document.getElementById(commitBoxIdArray[i]).style.boxShadow="0 0 12px rgb(0, 146, 205)"
+                    document.getElementById("CommitBox"+commitArray[i].id).style.boxShadow="0 0 12px rgb(0, 146, 205)"
                 }
             }
-            document.getElementById(id).style.boxShadow="0 0 12px grey"
+            document.getElementById("CommitBox"+id).style.boxShadow="0 0 12px grey"
             //Check if commit is commited earlier than head
             //Ticket: confirm if -0400 is GMT+0400
             if(commitTime){
@@ -237,11 +245,12 @@ export default function canvas() {
                 let headCommitHrMinSec=headTime.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/)
                 let headCommitMonthDay=headTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
                 let currentHeadTime=new Date(headCommitMonthDay+", "+headCommitYear+" "+headCommitHrMinSec)
-                if(commitId!==headId){
-                    document.getElementById("messageBox").innerHTML=document.getElementById("messageBox").innerHTML+"git checkout "+String(commitId).match(/[\w]{8}/)  
-                }else{
-                    document.getElementById("messageBox").innerHTML="Suggests: "
-                    
+                if(commitId!==headId&&document.getElementById("clickDivOptionBox").style.display=="none"){
+                    document.getElementById("messageTextBox").innerHTML=document.getElementById("messageTextBox").innerHTML+"git checkout "+String(commitId).match(/[\w]{8}/)
+                    document.getElementById("clickDivOptionBox").style.display="block" 
+                }else if(commitId==headId){
+                    document.getElementById("messageTextBox").innerHTML=""
+                    document.getElementById("clickDivOptionBox").style.display="none" 
                 }
                 if(currentHeadTime>currentCommitTime){
                     
@@ -267,7 +276,7 @@ export default function canvas() {
             if(plusCommitDivId!==headId){//extract the numbers at the end
                 document.getElementById("messageBox").innerHTML=document.getElementById("messageBox").innerHTML+"git revert "+String(plusCommitDivId).match(/[\w]{8}/)  
             }else{
-                document.getElementById("messageBox").innerHTML='Suggests: $git add . $git commit -m "YourMessage" $git push'
+                document.getElementById("messageBox").innerHTML='$git add . $git commit -m "YourMessage" $git push'
                 
             }
             document.getElementById(plusBoxMap[plusCommitDivId].commitDecorationBoxId).style.display="table"
