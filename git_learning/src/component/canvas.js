@@ -26,7 +26,7 @@ export default function canvas() {
         createCommitButton.className="btn btn-outline-primary"
         createCommitButton.innerHTML="Create a new commit"
         createCommitButton.style.borderRadius="0"
-        //createCommitButton.addEventListener("click",createNewCommit(plusBoxDiv.id))
+        createCommitButton.addEventListener("click",createNewCommit())
         let createBranchButton=document.createElement("button")
         createBranchButton.id="createBranchButton"
         createBranchButton.className="btn btn-outline-primary"
@@ -271,19 +271,20 @@ export default function canvas() {
         }
     }
 
-    function createNewCommit(plusCommitDivId){
+    function createNewCommit(){
         return function(){
-            if(plusCommitDivId!==headId){//extract the numbers at the end
-                document.getElementById("messageBox").innerHTML=document.getElementById("messageBox").innerHTML+"git revert "+String(plusCommitDivId).match(/[\w]{8}/)  
+            let commitDecorationBoxDivId="commitDecorationBox"+(clickedItemId-1)
+            if(commitDecorationBoxDivId!==headId){//extract the numbers at the end
+                document.getElementById("messageBox").innerHTML=document.getElementById("messageBox").innerHTML+"git revert "+String(commitDecorationBoxDivId).match(/[\w]{8}/)  
             }else{
                 document.getElementById("messageBox").innerHTML='$git add . $git commit -m "YourMessage" $git push'
                 
             }
-            document.getElementById(plusBoxMap[plusCommitDivId].commitDecorationBoxId).style.display="table"
-            document.getElementById(plusBoxMap[plusCommitDivId].commitDecorationTextId).style.display="table-cell"
-            document.getElementById(plusBoxMap[plusCommitDivId].commitDecorationTextId).style.verticalAlign="middle"
-            document.getElementById(plusBoxMap[plusCommitDivId].createCommitButtonId).style.display="none"
-            document.getElementById(plusBoxMap[plusCommitDivId].createBranchButtonId).style.display="none"
+            console.log(commitDecorationBoxDivId)
+            document.getElementById(commitDecorationBoxDivId).style.display="table"
+            document.getElementById(commitDecorationBoxDivId).style.display="table-cell"
+            document.getElementById(commitDecorationBoxDivId).style.verticalAlign="middle"
+            document.getElementById(commitDecorationBoxDivId).style.display="flex"
         }
     }
     function goBack(plusBoxDivId){
