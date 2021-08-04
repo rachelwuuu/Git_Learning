@@ -13,6 +13,13 @@ export default function canvas() {
     var steps
     var clickedItemId;
     var commitArray=[];
+    var suggestionMessages=[];
+    var createNewCommitInfo={};
+    createNewCommitInfo.buttonText="Create New Commit"
+    createNewCommitInfo.function="addNewCommitDiv"
+    createNewCommitInfo.steps="1. git add . "
+    createNewCommitInfo.explaination=""
+    suggestionMessages["createNewCommit"]=[createNewCommit]
     function handleSubmit(){
         ///////////1.Separate the text from input box and store them in an array
         var commitInfo=document.getElementById("commit_information").value
@@ -139,18 +146,6 @@ export default function canvas() {
                     defs.appendChild(marker)
                     marker.appendChild(path)
                     arrow.appendChild(polyline)
-                    
-                    //plusBox
-                    /*let plusBoxDiv=document.createElement("Card")
-                    plusBoxDiv.id="plusBoxDiv"+divCreationCount
-                    plusBoxDiv.style.border="solid grey"
-                    plusBoxDiv.className="m-auto d-flex flex-column"
-                    let plusSymbol=document.createElement("h1")
-                    plusSymbol.className="my-0"
-                    plusSymbol.id="plusSymbol"+divCreationCount
-                    plusSymbol.innerHTML="+"
-                    plusBoxDiv.appendChild(plusSymbol)
-                    plusSymbol.addEventListener("click", chooseWhichToAdd(plusBoxDiv.id))*/
                     let commitDecorationBox=document.createElement("div")
                     commitDecorationBox.id="commitDecorationBox"+divCreationCount
                     commitDecorationBox.style.border="solid purple"
@@ -237,6 +232,7 @@ export default function canvas() {
             //Check if commit is commited earlier than head
             //Ticket: confirm if -0400 is GMT+0400
             if(commitTime){
+
                 let currentCommitYear=commitTime.match(/[0-9]{4}$/)
                 let currentCommitHrMinSec=commitTime.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/)
                 let currentCommitMonthDay=commitTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
