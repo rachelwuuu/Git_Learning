@@ -14,12 +14,24 @@ export default function canvas() {
     var clickedItemId;
     var commitArray=[];
     var suggestionMessages=[];
-    var createNewCommitInfo={};
-    createNewCommitInfo.buttonText="Create New Commit"
-    createNewCommitInfo.function="addNewCommitDiv"
-    createNewCommitInfo.steps="1. git add . "
-    createNewCommitInfo.explaination=""
-    suggestionMessages["createNewCommit"]=[createNewCommit]
+    var createNewCommitGitAddInfo={};
+    createNewCommitGitAddInfo.buttonText="Create New Commit - Git add"
+    createNewCommitGitAddInfo.function="addNewCommitDiv"
+    createNewCommitGitAddInfo.steps="git add ."
+    createNewCommitGitAddInfo.explaination='"git add ." command adds all the revised files'
+    suggestionMessages["createNewCommitGitAdd"]=[createNewCommitGitAddInfo]
+    var createNewCommitGitCommitInfo={};
+    createNewCommitGitCommitInfo.buttonText="Create New Commit - Git commit"
+    createNewCommitGitCommitInfo.function="addNewCommitDiv"
+    createNewCommitGitCommitInfo.steps='git commit -m "Add Your Message here between the quotes"'
+    createNewCommitGitCommitInfo.explaination='"git commit" saves your changes to the local repository, "git push" pushes your files to a remote repository'
+    suggestionMessages["createNewCommitGitCommit"]=[createNewCommitGitCommitInfo]
+    var createNewCommitGitPushInfo={};
+    createNewCommitGitPushInfo.buttonText="Create New Commit - Git push"
+    createNewCommitGitPushInfo.function="addNewCommitDiv"
+    createNewCommitGitPushInfo.steps="git push"
+    createNewCommitGitPushInfo.explaination='"git push" pushes your files to a remote repository'
+    suggestionMessages["createNewCommitGitPush"]=[createNewCommitGitPushInfo]
     function handleSubmit(){
         ///////////1.Separate the text from input box and store them in an array
         var commitInfo=document.getElementById("commit_information").value
