@@ -15,24 +15,33 @@ export default function canvas() {
     var commitArray=[];
     var suggestionMessages=[];
     var createNewCommitGitAddInfo={};
-    createNewCommitGitAddInfo.buttonText="Create New Commit - Git add"
+    createNewCommitGitAddInfo.buttonId="createCommitButton"
+    createNewCommitGitAddInfo.text="Create New Commit - Git add"
     createNewCommitGitAddInfo.function="addNewCommitDiv"
     createNewCommitGitAddInfo.steps="git add ."
-    createNewCommitGitAddInfo.explaination='"git add ." command adds all the revised files'
+    createNewCommitGitAddInfo.explanation='"git add ." command adds all the revised files'
     suggestionMessages["createNewCommitGitAdd"]=createNewCommitGitAddInfo
     var createNewCommitGitCommitInfo={};
-    createNewCommitGitCommitInfo.buttonText="Create New Commit - Git commit"
+    createNewCommitGitCommitInfo.text="Create New Commit - Git commit"
     createNewCommitGitCommitInfo.function="addNewCommitDiv"
     createNewCommitGitCommitInfo.steps='git commit -m "Add Your Message here between the quotes"'
-    createNewCommitGitCommitInfo.explaination='"git commit" saves your changes to the local repository, "git push" pushes your files to a remote repository'
+    createNewCommitGitCommitInfo.explanation='"git commit" saves your changes to the local repository, "git push" pushes your files to a remote repository'
     suggestionMessages["createNewCommitGitCommit"]=createNewCommitGitCommitInfo
     var createNewCommitGitPushInfo={};
-    createNewCommitGitPushInfo.buttonText="Create New Commit - Git push"
+    createNewCommitGitPushInfo.text="Create New Commit - Git push"
     createNewCommitGitPushInfo.function="addNewCommitDiv"
     createNewCommitGitPushInfo.steps="git push"
-    createNewCommitGitPushInfo.explaination='"git push" pushes your files to a remote repository'
+    createNewCommitGitPushInfo.explanation='"git push" pushes your files to a remote repository'
+    var createNewBranchInfo={};
+    createNewBranchInfo.text="Create New Branch"
+    createNewBranchInfo.function="addNewBranchDiv"
+    createNewBranchInfo.steps="git "
+    createNewBranchInfo.explanation='"git branch" makes a new branch'
     suggestionMessages["createNewCommitGitPush"]=createNewCommitGitPushInfo
     function handleSubmit(){
+        document.getElementById("submitMessageDiv").style.display="none"
+        document.getElementById("commit_information").style.display="none"
+        document.getElementById("submitCommitMessageButton").style.display="none"
         ///////////1.Separate the text from input box and store them in an array
         var commitInfo=document.getElementById("commit_information").value
         let messageTextBox=document.createElement("card")
@@ -43,18 +52,24 @@ export default function canvas() {
         let createCommitButton=document.createElement("button")
         createCommitButton.id="createCommitButton"
         createCommitButton.className="btn btn-outline-primary"
-        createCommitButton.innerHTML="Create a new commit"
+        createCommitButton.innerHTML="Create a New Commit"
         createCommitButton.style.borderRadius="0"
         createCommitButton.addEventListener("click",createNewCommit())
         let createBranchButton=document.createElement("button")
         createBranchButton.id="createBranchButton"
         createBranchButton.className="btn btn-outline-primary"
-        createBranchButton.innerHTML="Create a new branch"
+        createBranchButton.innerHTML="Create a New Branch"
         createBranchButton.style.borderRadius="0"
+        let checkoutCommitButton=document.createElement("button")
+        checkoutCommitButton.id="checkoutCommitButton"
+        checkoutCommitButton.className="btn btn-outline-primary"
+        checkoutCommitButton.innerHTML="Checkout this Commit"
+        checkoutCommitButton.style.borderRadius="0"
         document.getElementById("messageBox").appendChild(clickDivOptionBox)
         document.getElementById("messageBox").appendChild(messageTextBox)
         clickDivOptionBox.appendChild(createCommitButton)
         clickDivOptionBox.appendChild(createBranchButton)
+        clickDivOptionBox.appendChild(checkoutCommitButton)
         if (commitInfo.startsWith("commit ")){
             if(commitInfo.includes("HEAD")){
                 
@@ -158,55 +173,21 @@ export default function canvas() {
                     defs.appendChild(marker)
                     marker.appendChild(path)
                     arrow.appendChild(polyline)
-                    let commitDecorationBox=document.createElement("div")
+                    let commitDecorationBox=document.createElement("Card")
                     commitDecorationBox.id="commitDecorationBox"+divCreationCount
                     commitDecorationBox.style.border="solid purple"
-                    commitDecorationBox.style.display="none"
-                    //commitDecorationBox.className="p-3"
-                    commitDecorationBox.style.backgroundImage="url("+titledLinesSvg+")"
-                    let commitDecorationText=document.createElement("P")
+                    commitDecorationBox.className="mx-auto"
+                    commitDecorationBox.innerHTML="New Commit"
+                    //commitDecorationBox.style.backgroundImage="url("+titledLinesSvg+")"
+                    /*let commitDecorationText=document.createElement("P")
                     commitDecorationText.id="commitDecorationText"+divCreationCount
                     commitDecorationText.style.fontSize="12px"
                     commitDecorationText.style.backgroundColor="white"
                     commitDecorationText.style.border="solid purple"
                     commitDecorationText.style.borderRadius="8px"
                     commitDecorationText.innerHTML="New Commit"
-                    commitDecorationBox.appendChild(commitDecorationText)
+                    commitDecorationBox.appendChild(commitDecorationText)*/
                     connectingDiv.appendChild(commitDecorationBox)
-                    //plusBoxDiv.appendChild(commitDecorationBox)
-                    /*let createCommitButton=document.createElement("button")
-                    createCommitButton.id="createCommitButton"+divCreationCount
-                    createCommitButton.className="btn btn-outline-primary"
-                    createCommitButton.innerHTML="Create a new commit"
-                    createCommitButton.style.display="none"
-                    createCommitButton.style.borderRadius="0"
-                    createCommitButton.addEventListener("click",createNewCommit(plusBoxDiv.id))
-                    let createBranchButton=document.createElement("button")
-                    createBranchButton.id="createBranchButton"+divCreationCount
-                    createBranchButton.className="btn btn-outline-primary"
-                    createBranchButton.innerHTML="Create a new branch"
-                    createBranchButton.style.display="none"
-                    createBranchButton.style.borderRadius="0"
-                    let backButton=document.createElement("button")
-                    backButton.id="backButton"+divCreationCount
-                    backButton.className="btn btn-outline-primary"
-                    backButton.innerHTML="<--Go Back"
-                    backButton.style.display="none"
-                    backButton.style.borderRadius="0"
-                    backButton.addEventListener("click",goBack(plusBoxDiv.id))
-                    plusBoxDiv.appendChild(createCommitButton)
-                    plusBoxDiv.appendChild(createBranchButton)
-                    plusBoxDiv.appendChild(backButton)
-                    connectingDiv.appendChild(plusBoxDiv)
-                    const plusBox={}
-                    plusBox.id=plusBoxDiv.id
-                    plusBox.createCommitButtonId=createCommitButton.id
-                    plusBox.createBranchButtonId=createBranchButton.id
-                    plusBox.plusSymbolId=plusSymbol.id
-                    plusBox.backButtonId=backButton.id
-                    plusBox.commitDecorationBoxId=commitDecorationBox.id
-                    plusBox.commitDecorationTextId=commitDecorationText.id
-                    plusBoxMap[plusBox.id]=plusBox*/
                     var arrowTail=document.createElementNS('http://www.w3.org/2000/svg',"svg")
                     arrowTail.setAttribute("viewBox","0 0 100 8") //("(x1,y1) (x2,y2)")
                     arrowTail.setAttributeNS('http://www.w3.org/2000/xmlns/',"xmlns:xlink",'http://www.w3.org/2000/xmlns/')
@@ -253,10 +234,10 @@ export default function canvas() {
                 let headCommitHrMinSec=headTime.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/)
                 let headCommitMonthDay=headTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
                 let currentHeadTime=new Date(headCommitMonthDay+", "+headCommitYear+" "+headCommitHrMinSec)
-                if(commitId!==headId&&document.getElementById("clickDivOptionBox").style.display=="none"){
+                if(commitId!==headId&&document.getElementById("clickDivOptionBox").style.display==="none"){
                     document.getElementById("messageTextBox").innerHTML=document.getElementById("messageTextBox").innerHTML+"git checkout "+String(commitId).match(/[\w]{8}/)
                     document.getElementById("clickDivOptionBox").style.display="block" 
-                }else if(commitId==headId){
+                }else if(commitId===headId){
                     document.getElementById("messageTextBox").innerHTML=""
                     document.getElementById("clickDivOptionBox").style.display="none" 
                 }
@@ -288,10 +269,9 @@ export default function canvas() {
                 document.getElementById("messageBox").innerHTML='$git add . $git commit -m "YourMessage" $git push'
                 
             }
-            console.log(commitDecorationBoxDivId)
-            document.getElementById(commitDecorationBoxDivId).style.display="table"
+            /*document.getElementById(commitDecorationBoxDivId).style.display="table"
             document.getElementById(commitDecorationBoxDivId).style.display="table-cell"
-            document.getElementById(commitDecorationBoxDivId).style.verticalAlign="middle"
+            document.getElementById(commitDecorationBoxDivId).style.verticalAlign="middle"*/
             document.getElementById(commitDecorationBoxDivId).style.display="flex"
         }
     }
@@ -319,10 +299,10 @@ export default function canvas() {
                 <div className="d-flex flex-row" style={{minWidth:"1000px"}}>
                     <div className="col p-0 justify-content-center align-items-center"> 
                         <div className="card d-flex w-75 justify-content-center align-items-between flex-column offset-md-2" style={{maxWidth:"600px", border:"solid grey"}}>
-                                <div className="d-flex flex-column w-100 justify-content-center align-items-center mb-5">
-                                    <input id="commit_information" type="text" className="m-3 w-50" rows="3"/>
-                                    <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
-                                </div>
+                            <div id="submitMessageDiv" className="d-flex flex-column w-100 justify-content-center align-items-center mb-5">
+                                <input id="commit_information" type="text" className="m-3 w-50" rows="3"/>
+                                <button id="submitCommitMessageButton" type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
+                            </div>
                             <Card id="parentDiv" className="d-flex flex-column w-100" style={{"overflowX":"scroll"}}>
 
                             </Card>
