@@ -178,6 +178,7 @@ export default function canvas() {
                     commitDecorationBox.style.border="solid purple"
                     commitDecorationBox.className="mx-auto"
                     commitDecorationBox.innerHTML="New Commit"
+                    commitDecorationBox.style.display="none"
                     //commitDecorationBox.style.backgroundImage="url("+titledLinesSvg+")"
                     /*let commitDecorationText=document.createElement("P")
                     commitDecorationText.id="commitDecorationText"+divCreationCount
@@ -235,7 +236,7 @@ export default function canvas() {
                 let headCommitMonthDay=headTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
                 let currentHeadTime=new Date(headCommitMonthDay+", "+headCommitYear+" "+headCommitHrMinSec)
                 if(commitId!==headId&&document.getElementById("clickDivOptionBox").style.display==="none"){
-                    document.getElementById("messageTextBox").innerHTML=document.getElementById("messageTextBox").innerHTML+"git checkout "+String(commitId).match(/[\w]{8}/)
+                    //document.getElementById("messageTextBox").innerHTML=document.getElementById("messageTextBox").innerHTML+"git checkout "+String(commitId).match(/[\w]{8}/)
                     document.getElementById("clickDivOptionBox").style.display="block" 
                 }else if(commitId===headId){
                     document.getElementById("messageTextBox").innerHTML=""
@@ -263,16 +264,17 @@ export default function canvas() {
     function createNewCommit(){
         return function(){
             let commitDecorationBoxDivId="commitDecorationBox"+(clickedItemId-1)
-            if(commitDecorationBoxDivId!==headId){//extract the numbers at the end
+            /*if(commitDecorationBoxDivId!==headId){//extract the numbers at the end
                 document.getElementById("messageBox").innerHTML=document.getElementById("messageBox").innerHTML+"git revert "+String(commitDecorationBoxDivId).match(/[\w]{8}/)  
             }else{
                 document.getElementById("messageBox").innerHTML='$git add . $git commit -m "YourMessage" $git push'
                 
             }
-            /*document.getElementById(commitDecorationBoxDivId).style.display="table"
+            document.getElementById(commitDecorationBoxDivId).style.display="table"
             document.getElementById(commitDecorationBoxDivId).style.display="table-cell"
             document.getElementById(commitDecorationBoxDivId).style.verticalAlign="middle"*/
             document.getElementById(commitDecorationBoxDivId).style.display="flex"
+            document.getElementById("clickDivOptionBox").style.display="none" 
         }
     }
     function goBack(plusBoxDivId){
