@@ -39,11 +39,9 @@ export default function canvas() {
     createNewBranchInfo.explanation='"git branch" makes a new branch'
     suggestionMessages["createNewCommitGitPush"]=createNewCommitGitPushInfo
     function handleSubmit(){
-        document.getElementById("submitMessageDiv").style.display="none"
-        document.getElementById("commit_information").style.display="none"
-        document.getElementById("submitCommitMessageButton").style.display="none"
         ///////////1.Separate the text from input box and store them in an array
-        var commitInfo=document.getElementById("commit_information").value
+        var commitInformation=document.getElementById("commit_information").value
+        var commitInfo=commitInformation.replace(/\n/g," ")
         let messageTextBox=document.createElement("card")
         messageTextBox.id="messageTextBox"
         let clickDivOptionBox=document.createElement("card")
@@ -72,7 +70,6 @@ export default function canvas() {
         clickDivOptionBox.appendChild(checkoutCommitButton)
         if (commitInfo.startsWith("commit ")){
             if(commitInfo.includes("HEAD")){
-                
                 var newCommitArray=commitInfo.split(/(?=commit)/g);
                 var validCommitMessage=false;
                 //////////////2. Loop through the array and draw the elements dynamically on the website
@@ -83,8 +80,8 @@ export default function canvas() {
                     let patternOfGitCommitId=/[\w]{40}/
                     if(patternOfGitCommitId.test(commitId) && elementCheck.charAt(47)===" "){
                         validCommitMessage=true;
+                        console.log(elementCheck.charAt(47))
                         let Author=elementCheck.split(/(?=Author: )/).pop().split(/(?= Date)/)[0].trim()
-                        
                         let commitTime=elementCheck.split(/(?=(Date: ))/).pop().split(/(?= -)/)[0].trim()
                         let commitMessage=elementCheck.split(/-(\d){4} /).pop().trim()
                         const commitInfo={}
@@ -92,11 +89,10 @@ export default function canvas() {
                         commitInfo.commitId=commitId
                         commitInfo.commitTime=commitTime
                         commitInfo.commitMessage=commitMessage
-                        
                         commitInfo.commitAuthor=Author
                         commitArray.push(commitInfo)
                     }else{
-                        console.log("Please enter a commit message with a valid commit id.")
+                        console.log("Please enter a commit message with a valid commit id."+elementCheck.charAt(47))
                         validCommitMessage=false;
                         break;
                     }
@@ -106,6 +102,9 @@ export default function canvas() {
             }
         }
         if(validCommitMessage){
+            document.getElementById("submitMessageDiv").style.display="none"
+            document.getElementById("commit_information").style.display="none"
+            document.getElementById("submitCommitMessageButton").style.display="none"
             for(let k=0;k<commitArray.length;k++) {
                 let commitId=commitArray[k].commitId;
                 let author = commitArray[k].commitAuthor;
@@ -275,9 +274,10 @@ export default function canvas() {
             document.getElementById(commitDecorationBoxDivId).style.verticalAlign="middle"*/
             document.getElementById(commitDecorationBoxDivId).style.display="flex"
             document.getElementById("clickDivOptionBox").style.display="none" 
+            document.getElementById("messageTextBox").innerHTML='1) $git add .</br>2)$git commit -m "YourMessage"</br>3)$git push'
         }
     }
-    function goBack(plusBoxDivId){
+    /*function goBack(plusBoxDivId){
         return function(){
             
             if(document.getElementById(plusBoxMap[plusBoxDivId].commitDecorationBoxId).style.display!=="none"){
@@ -293,7 +293,7 @@ export default function canvas() {
                 document.getElementById(plusBoxMap[plusBoxDivId].plusSymbolId).innerHTML="+"
             }
         }
-    }
+    }*/
     return (
         <>  {/* Note: Use the parent div to make the two elements the same width and have spacing at the same time. 
         As align items center in the parent div doesn't allow it to have spacings*/}
@@ -302,7 +302,7 @@ export default function canvas() {
                     <div className="col p-0 justify-content-center align-items-center"> 
                         <div className="card d-flex w-75 justify-content-center align-items-between flex-column offset-md-2" style={{maxWidth:"600px", border:"solid grey"}}>
                             <div id="submitMessageDiv" className="d-flex flex-column w-100 justify-content-center align-items-center mb-5">
-                                <input id="commit_information" type="text" className="m-3 w-50" rows="3"/>
+                                <textarea id="commit_information" type="text" className="m-3 w-50" rows="3"/>
                                 <button id="submitCommitMessageButton" type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
                             </div>
                             <Card id="parentDiv" className="d-flex flex-column w-100" style={{"overflowX":"scroll"}}>
