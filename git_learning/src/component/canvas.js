@@ -67,13 +67,13 @@ export default function canvas() {
         checkoutCommitButton.className="btn btn-outline-primary"
         checkoutCommitButton.innerHTML="Checkout this Commit"
         checkoutCommitButton.style.borderRadius="0"
+        checkoutCommitButton.addEventListener("click",checkoutCommit())
         let confirmStepButton=document.createElement("button")
         confirmStepButton.id="confirmStepButton"
         confirmStepButton.className="btn btn-outline-primary"
         confirmStepButton.innerHTML="Confirm"
         confirmStepButton.style.borderRadius="0"
         confirmStepButton.style.display="none"
-        
         confirmStepButton.addEventListener("click", confirmStep())
         let nextStepsHeader=document.createElement("h5")
         nextStepsHeader.id="nextStepsHeader"
@@ -277,15 +277,6 @@ export default function canvas() {
             }
         }
     }
-        
-    function chooseWhichToAdd(plusCommitDivId){
-        return function(){
-            document.getElementById(plusBoxMap[plusCommitDivId].plusSymbolId).innerHTML=""
-            document.getElementById(plusBoxMap[plusCommitDivId].createCommitButtonId).style.display="block"
-            document.getElementById(plusBoxMap[plusCommitDivId].createBranchButtonId).style.display="block"
-            document.getElementById(plusBoxMap[plusCommitDivId].backButtonId).style.display="block"
-        }
-    }
 
     function createNewCommit(){
         return function(){
@@ -310,12 +301,18 @@ export default function canvas() {
             }
         }
     }
+    function checkoutCommit(){
+        return function(){
+            let commitId=commitArray[clickedItemId-1].commitId
+            document.getElementById("messageTextBox").innerHTML=document.getElementById("messageTextBox").innerHTML+"git checkout "+String(commitId).match(/[\w]{8}/)
+        }
+    }
     function confirmStep(){
         return function(){
             lockCanvas=false
             document.getElementById("confirmStepButton").style.display="none"
             document.getElementById("nextStepsHeader").style.display="flex"
-            document.getElementById("stepsBox").innerHTML=document.getElementById("messageTextBox").innerHTML
+            document.getElementById("stepsBox").innerHTML=document.getElementById("stepsBox").innerHTML+'\n'+document.getElementById("messageTextBox").innerHTML
             document.getElementById("messageTextBox").innerHTML=''
             
         }
