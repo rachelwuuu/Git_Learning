@@ -9,6 +9,7 @@ export default function canvas() {
     var plusBoxMap={}
     var headId
     var headTime
+    var lockCanvas=false
     var stepNumber=0
     var steps
     var clickedItemId;
@@ -211,42 +212,46 @@ export default function canvas() {
     //Function that is called when div is clicked
     function divChangeWhenClicked(id, commitTime){
         return function(){
-            //Change Div shadow
-            let commitId=commitArray[id-1].commitId
-            clickedItemId=id;
-            for(let i=0; i<commitArray.length;i++){
-                if( document.getElementById("CommitBox"+commitArray[i].id).style.border!=="solid rgb(0, 146, 205)"){
-                    document.getElementById("CommitBox"+commitArray[i].id).style.boxShadow="";
-                }else{
-                    document.getElementById("CommitBox"+commitArray[i].id).style.boxShadow="0 0 12px rgb(0, 146, 205)"
+            if(!lockCanvas){
+                //Change Div shadow
+                let commitId=commitArray[id-1].commitId
+                clickedItemId=id;
+                for(let i=0; i<commitArray.length;i++){
+                    if( document.getElementById("CommitBox"+commitArray[i].id).style.border!=="solid rgb(0, 146, 205)"){
+                        document.getElementById("CommitBox"+commitArray[i].id).style.boxShadow="";
+                    }else{
+                        document.getElementById("CommitBox"+commitArray[i].id).style.boxShadow="0 0 12px rgb(0, 146, 205)"
+                    }
                 }
-            }
-            document.getElementById("CommitBox"+id).style.boxShadow="0 0 12px grey"
-            //Check if commit is commited earlier than head
-            //Ticket: confirm if -0400 is GMT+0400
-            if(commitTime){
+                document.getElementById("CommitBox"+id).style.boxShadow="0 0 12px grey"
+                //Check if commit is commited earlier than head
+                //Ticket: confirm if -0400 is GMT+0400
+                if(commitTime){
 
-                let currentCommitYear=commitTime.match(/[0-9]{4}$/)
-                let currentCommitHrMinSec=commitTime.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/)
-                let currentCommitMonthDay=commitTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
-                let currentCommitTime=new Date(currentCommitMonthDay+", "+currentCommitYear+" "+currentCommitHrMinSec)
-                let headCommitYear=headTime.match(/[0-9]{4}$/)
-                let headCommitHrMinSec=headTime.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/)
-                let headCommitMonthDay=headTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
-                let currentHeadTime=new Date(headCommitMonthDay+", "+headCommitYear+" "+headCommitHrMinSec)
-                if(commitId!==headId&&document.getElementById("clickDivOptionBox").style.display==="none"){
-                    //document.getElementById("messageTextBox").innerHTML=document.getElementById("messageTextBox").innerHTML+"git checkout "+String(commitId).match(/[\w]{8}/)
-                    document.getElementById("clickDivOptionBox").style.display="block" 
-                }else if(commitId===headId){
-                    document.getElementById("messageTextBox").innerHTML=""
-                    document.getElementById("clickDivOptionBox").style.display="none" 
+                    let currentCommitYear=commitTime.match(/[0-9]{4}$/)
+                    let currentCommitHrMinSec=commitTime.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/)
+                    let currentCommitMonthDay=commitTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
+                    let currentCommitTime=new Date(currentCommitMonthDay+", "+currentCommitYear+" "+currentCommitHrMinSec)
+                    let headCommitYear=headTime.match(/[0-9]{4}$/)
+                    let headCommitHrMinSec=headTime.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/)
+                    let headCommitMonthDay=headTime.match(/[A-Z][a-z]{2} [0-9]{2}/)
+                    let currentHeadTime=new Date(headCommitMonthDay+", "+headCommitYear+" "+headCommitHrMinSec)
+                    if(commitId!==headId&&document.getElementById("clickDivOptionBox").style.display==="none"){
+                        //document.getElementById("messageTextBox").innerHTML=document.getElementById("messageTextBox").innerHTML+"git checkout "+String(commitId).match(/[\w]{8}/)
+                        document.getElementById("clickDivOptionBox").style.display="block" 
+                    }else if(commitId===headId){
+                        document.getElementById("messageTextBox").innerHTML=""
+                        document.getElementById("clickDivOptionBox").style.display="none" 
+                    }
+                    if(currentHeadTime>currentCommitTime){
+                        
+                        
+                    }else{
+                        console.log("No")
+                    }
                 }
-                if(currentHeadTime>currentCommitTime){
-                    
-                    
-                }else{
-                    console.log("No")
-                }
+            }else{
+                alert("Please confirm step in suggestion box before going on to the next step.")
             }
         }
     }
@@ -262,38 +267,26 @@ export default function canvas() {
 
     function createNewCommit(){
         return function(){
-            let commitDecorationBoxDivId="commitDecorationBox"+(clickedItemId-1)
-            /*if(commitDecorationBoxDivId!==headId){//extract the numbers at the end
-                document.getElementById("messageBox").innerHTML=document.getElementById("messageBox").innerHTML+"git revert "+String(commitDecorationBoxDivId).match(/[\w]{8}/)  
+            if(!lockCanvas){
+                lockCanvas=true
+                let commitDecorationBoxDivId="commitDecorationBox"+(clickedItemId-1)
+                /*if(commitDecorationBoxDivId!==headId){//extract the numbers at the end
+                    document.getElementById("messageBox").innerHTML=document.getElementById("messageBox").innerHTML+"git revert "+String(commitDecorationBoxDivId).match(/[\w]{8}/)  
+                }else{
+                    document.getElementById("messageBox").innerHTML='$git add . $git commit -m "YourMessage" $git push'
+                    
+                }
+                document.getElementById(commitDecorationBoxDivId).style.display="table"
+                document.getElementById(commitDecorationBoxDivId).style.display="table-cell"
+                document.getElementById(commitDecorationBoxDivId).style.verticalAlign="middle"*/
+                document.getElementById(commitDecorationBoxDivId).style.display="flex"
+                document.getElementById("clickDivOptionBox").style.display="none" 
+                document.getElementById("messageTextBox").innerHTML='1) $git add .</br>2)$git commit -m "YourMessage"</br>3)$git push'
             }else{
-                document.getElementById("messageBox").innerHTML='$git add . $git commit -m "YourMessage" $git push'
-                
+                alert("Please confirm step in suggestion box before going on to the next step.")
             }
-            document.getElementById(commitDecorationBoxDivId).style.display="table"
-            document.getElementById(commitDecorationBoxDivId).style.display="table-cell"
-            document.getElementById(commitDecorationBoxDivId).style.verticalAlign="middle"*/
-            document.getElementById(commitDecorationBoxDivId).style.display="flex"
-            document.getElementById("clickDivOptionBox").style.display="none" 
-            document.getElementById("messageTextBox").innerHTML='1) $git add .</br>2)$git commit -m "YourMessage"</br>3)$git push'
         }
     }
-    /*function goBack(plusBoxDivId){
-        return function(){
-            
-            if(document.getElementById(plusBoxMap[plusBoxDivId].commitDecorationBoxId).style.display!=="none"){
-                document.getElementById(plusBoxMap[plusBoxDivId].commitDecorationBoxId).style.display="none"
-                document.getElementById(plusBoxMap[plusBoxDivId].createCommitButtonId).style.display="block"
-                document.getElementById(plusBoxMap[plusBoxDivId].createBranchButtonId).style.display="block"
-                document.getElementById(plusBoxMap[plusBoxDivId].backButtonId).style.display="block"
-            }else if(document.getElementById(plusBoxMap[plusBoxDivId].createCommitButtonId).style.display!=="none"||
-            document.getElementById(plusBoxMap[plusBoxDivId].createBranchButtonId).style.display!=="none"){
-                document.getElementById(plusBoxMap[plusBoxDivId].createCommitButtonId).style.display="none"
-                document.getElementById(plusBoxMap[plusBoxDivId].createBranchButtonId).style.display="none"
-                document.getElementById(plusBoxMap[plusBoxDivId].backButtonId).style.display="none"
-                document.getElementById(plusBoxMap[plusBoxDivId].plusSymbolId).innerHTML="+"
-            }
-        }
-    }*/
     return (
         <>  {/* Note: Use the parent div to make the two elements the same width and have spacing at the same time. 
         As align items center in the parent div doesn't allow it to have spacings*/}
