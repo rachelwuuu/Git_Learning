@@ -48,6 +48,9 @@ export default function canvas() {
         let clickDivOptionBox=document.createElement("card")
         clickDivOptionBox.style.display="none"
         clickDivOptionBox.id="clickDivOptionBox"
+        let stepsBox=document.createElement("card")
+        stepsBox.id="stepsBox"
+
         let createCommitButton=document.createElement("button")
         createCommitButton.id="createCommitButton"
         createCommitButton.className="btn btn-outline-primary"
@@ -64,8 +67,23 @@ export default function canvas() {
         checkoutCommitButton.className="btn btn-outline-primary"
         checkoutCommitButton.innerHTML="Checkout this Commit"
         checkoutCommitButton.style.borderRadius="0"
+        let confirmStepButton=document.createElement("button")
+        confirmStepButton.id="confirmStepButton"
+        confirmStepButton.className="btn btn-outline-primary"
+        confirmStepButton.innerHTML="Confirm"
+        confirmStepButton.style.borderRadius="0"
+        confirmStepButton.style.display="none"
+        
+        confirmStepButton.addEventListener("click", confirmStep())
+        let nextStepsHeader=document.createElement("h5")
+        nextStepsHeader.id="nextStepsHeader"
+        nextStepsHeader.innerHTML="Next Steps:"
+        nextStepsHeader.style.display="none"
         document.getElementById("messageBox").appendChild(clickDivOptionBox)
         document.getElementById("messageBox").appendChild(messageTextBox)
+        document.getElementById("messageBox").appendChild(confirmStepButton)
+        document.getElementById("messageBox").appendChild(nextStepsHeader)
+        document.getElementById("messageBox").appendChild(stepsBox)
         clickDivOptionBox.appendChild(createCommitButton)
         clickDivOptionBox.appendChild(createBranchButton)
         clickDivOptionBox.appendChild(checkoutCommitButton)
@@ -239,6 +257,10 @@ export default function canvas() {
                     if(commitId!==headId&&document.getElementById("clickDivOptionBox").style.display==="none"){
                         //document.getElementById("messageTextBox").innerHTML=document.getElementById("messageTextBox").innerHTML+"git checkout "+String(commitId).match(/[\w]{8}/)
                         document.getElementById("clickDivOptionBox").style.display="block" 
+                        if(document.getElementById("commitDecorationBox"+(id-1)).style.display!=="none"){
+                            //Ticket:Needs to dynamically create commit so that users can add in more commits
+                            document.getElementById("createCommitButton").style.display="none"
+                        }
                     }else if(commitId===headId){
                         document.getElementById("messageTextBox").innerHTML=""
                         document.getElementById("clickDivOptionBox").style.display="none" 
@@ -282,9 +304,20 @@ export default function canvas() {
                 document.getElementById(commitDecorationBoxDivId).style.display="flex"
                 document.getElementById("clickDivOptionBox").style.display="none" 
                 document.getElementById("messageTextBox").innerHTML='1) $git add .</br>2)$git commit -m "YourMessage"</br>3)$git push'
+                document.getElementById("confirmStepButton").style.display="flex"
             }else{
                 alert("Please confirm step in suggestion box before going on to the next step.")
             }
+        }
+    }
+    function confirmStep(){
+        return function(){
+            lockCanvas=false
+            document.getElementById("confirmStepButton").style.display="none"
+            document.getElementById("nextStepsHeader").style.display="flex"
+            document.getElementById("stepsBox").innerHTML=document.getElementById("messageTextBox").innerHTML
+            document.getElementById("messageTextBox").innerHTML=''
+            
         }
     }
     return (
@@ -305,7 +338,7 @@ export default function canvas() {
                     </div>
                     <div className="ml-5 col" style={{ maxWidth:"200px"}}>
                         <Card id="messageBox" className="d-flex flex-column w-100">
-                            <p>Suggests: </p>
+                            <h5>Suggests: </h5>
                         </Card>
                     </div>
                 </div>
