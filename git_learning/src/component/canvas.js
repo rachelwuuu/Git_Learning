@@ -12,6 +12,7 @@ export default function canvas() {
     var lockCanvas=false
     var stepNumber=0
     var steps
+    var currentBranchName
     var clickedItemId;
     var commitArray=[];
     var suggestionMessages=[];
@@ -54,18 +55,18 @@ export default function canvas() {
         let createCommitButton=document.createElement("button")
         createCommitButton.id="createCommitButton"
         createCommitButton.className="btn btn-outline-primary"
-        createCommitButton.innerHTML="Create a New Commit"
+        createCommitButton.innerHTML="Create a New Commit after this Commit"
         createCommitButton.style.borderRadius="0"
         createCommitButton.addEventListener("click",createNewCommit())
         let createBranchButton=document.createElement("button")
         createBranchButton.id="createBranchButton"
         createBranchButton.className="btn btn-outline-primary"
-        createBranchButton.innerHTML="Create a New Branch"
+        createBranchButton.innerHTML="Create a New Branch after this Commit"
         createBranchButton.style.borderRadius="0"
         let checkoutCommitButton=document.createElement("button")
         checkoutCommitButton.id="checkoutCommitButton"
         checkoutCommitButton.className="btn btn-outline-primary"
-        checkoutCommitButton.innerHTML="Checkout this Commit"
+        checkoutCommitButton.innerHTML="Get the Code from this Commit"
         checkoutCommitButton.style.borderRadius="0"
         checkoutCommitButton.addEventListener("click",checkoutCommit())
         let confirmStepButton=document.createElement("button")
@@ -174,17 +175,17 @@ export default function canvas() {
                     marker.setAttribute("refY", "5")
                     marker.setAttribute("orient", "auto-start-reverse")
                     var polyline=document.createElementNS('http://www.w3.org/2000/svg',"polyline")
-                    polyline.setAttribute("points","50, 2 50, 10") //("(x1,y1) (x2,y2)")
+                    polyline.setAttribute("points","25, 2 25, 10") //("(x1,y1) (x2,y2)")
                     polyline.setAttribute("fill","none")
                     polyline.setAttribute("stroke","black")
                     polyline.setAttribute("marker-start","url(#arrowHead)")
                     var defs=document.createElementNS('http://www.w3.org/2000/svg','defs')
                     var arrow=document.createElementNS('http://www.w3.org/2000/svg',"svg")
-                    arrow.setAttribute("viewBox","0 0 100 10") //("(x1,y1) (x2,y2)")
+                    arrow.setAttribute("viewBox","0 0 50 10") //("(x1,y1) (x2,y2)")
                     arrow.setAttributeNS('http://www.w3.org/2000/xmlns/',"xmlns:xlink",'http://www.w3.org/2000/xmlns/')
                     var connectingDiv=document.createElement('div')
                     connectingDiv.id="connectingDiv"+(divCreationCount);
-                    connectingDiv.className="d-flex flex-column justify-content-center"
+                    connectingDiv.className="d-flex flex-column w-50 align-self-center justify-content-center"
                     parentDiv.appendChild(connectingDiv)
                     connectingDiv.appendChild(arrow)
                     arrow.appendChild(defs)
@@ -208,10 +209,10 @@ export default function canvas() {
                     commitDecorationBox.appendChild(commitDecorationText)*/
                     connectingDiv.appendChild(commitDecorationBox)
                     var arrowTail=document.createElementNS('http://www.w3.org/2000/svg',"svg")
-                    arrowTail.setAttribute("viewBox","0 0 100 8") //("(x1,y1) (x2,y2)")
+                    arrowTail.setAttribute("viewBox","0 0 50 10") //("(x1,y1) (x2,y2)")
                     arrowTail.setAttributeNS('http://www.w3.org/2000/xmlns/',"xmlns:xlink",'http://www.w3.org/2000/xmlns/')
                     var tailLine=document.createElementNS('http://www.w3.org/2000/svg',"polyline")
-                    tailLine.setAttribute("points","50, 0 50, 8") 
+                    tailLine.setAttribute("points","25, 0 25, 10") 
                     tailLine.setAttribute("fill","none")
                     tailLine.setAttribute("stroke","black")
                     arrowTail.appendChild(tailLine)
@@ -319,7 +320,8 @@ export default function canvas() {
         return function(){
             lockCanvas=true
             let commitId=commitArray[clickedItemId-1].commitId
-            document.getElementById("messageTextBox").innerHTML=(stepNumber+=1)+") $ git checkout "+String(commitId).match(/[\w]{8}/)+"</br>"
+            document.getElementById("messageTextBox").innerHTML=(stepNumber+=1)+") $ git checkout -b <b>random-temporary-branch-name</b> "+
+            String(commitId).match(/[\w]{8}/)+"</br>"+(stepNumber+=1)+') git checkout '+"</br>"+(stepNumber+=1)+') git branch -d random-temporary-branch-name'
             document.getElementById("confirmStepButton").style.display="flex"
         }
     }
