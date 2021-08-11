@@ -260,17 +260,31 @@ export default function canvas() {
                         if(document.getElementById("commitDecorationBox"+(id-1)).style.display!=="none"){
                             //Ticket:Needs to dynamically create commit so that users can add in more commits
                             document.getElementById("createCommitButton").style.display="none"
+                            console.log("need display:"+(id-1))
+                        }else{
+                            document.getElementById("createCommitButton").style.display="flex"
+                            console.log("need display: commitDecorationBox"+(id-1))
                         }
                     }else if(commitId===headId){
                         document.getElementById("messageTextBox").innerHTML=""
-                        document.getElementById("clickDivOptionBox").style.display="none" 
+                        document.getElementById("clickDivOptionBox").style.display="none"
+                         
+                    }else{
+                        if(document.getElementById("commitDecorationBox"+(id-1)).style.display!=="none"){
+                            //Ticket:Needs to dynamically create commit so that users can add in more commits
+                            document.getElementById("createCommitButton").style.display="none"
+                            console.log("need display:"+(id-1))
+                        }else{
+                            document.getElementById("createCommitButton").style.display="flex"
+                            console.log("need display: commitDecorationBox"+(id-1))
+                        }
                     }
-                    if(currentHeadTime>currentCommitTime){
+                    /*if(currentHeadTime>currentCommitTime){
                         
                         
                     }else{
                         console.log("No")
-                    }
+                    }*/
                 }
             }else{
                 alert("Please confirm step in suggestion box before going on to the next step.")
@@ -294,7 +308,7 @@ export default function canvas() {
                 document.getElementById(commitDecorationBoxDivId).style.verticalAlign="middle"*/
                 document.getElementById(commitDecorationBoxDivId).style.display="flex"
                 document.getElementById("clickDivOptionBox").style.display="none" 
-                document.getElementById("messageTextBox").innerHTML='1) $git add .</br>2)$git commit -m "YourMessage"</br>3)$git push'
+                document.getElementById("messageTextBox").innerHTML=(stepNumber+=1)+') $git add .</br>'+(stepNumber+=1)+')$git commit -m "YourMessage"</br>'+(stepNumber+=1)+')$git push</br>'
                 document.getElementById("confirmStepButton").style.display="flex"
             }else{
                 alert("Please confirm step in suggestion box before going on to the next step.")
@@ -303,8 +317,10 @@ export default function canvas() {
     }
     function checkoutCommit(){
         return function(){
+            lockCanvas=true
             let commitId=commitArray[clickedItemId-1].commitId
-            document.getElementById("messageTextBox").innerHTML=document.getElementById("messageTextBox").innerHTML+"git checkout "+String(commitId).match(/[\w]{8}/)
+            document.getElementById("messageTextBox").innerHTML=(stepNumber+=1)+") $ git checkout "+String(commitId).match(/[\w]{8}/)+"</br>"
+            document.getElementById("confirmStepButton").style.display="flex"
         }
     }
     function confirmStep(){
@@ -312,7 +328,7 @@ export default function canvas() {
             lockCanvas=false
             document.getElementById("confirmStepButton").style.display="none"
             document.getElementById("nextStepsHeader").style.display="flex"
-            document.getElementById("stepsBox").innerHTML=document.getElementById("stepsBox").innerHTML+'\n'+document.getElementById("messageTextBox").innerHTML
+            document.getElementById("stepsBox").innerHTML=document.getElementById("stepsBox").innerHTML+document.getElementById("messageTextBox").innerHTML
             document.getElementById("messageTextBox").innerHTML=''
             
         }
