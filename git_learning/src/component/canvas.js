@@ -43,7 +43,7 @@ export default function canvas() {
     function handleSubmit(){
         ///////////1.Separate the text from input box and store them in an array
         var commitInformation=document.getElementById("commit_information").value
-        var commitInfo=commitInformation.replace(/\n/g," ")
+        var commitInfo=commitInformation.replace(/\n/g," ")//ticket:\r linux?
         let messageTextBox=document.createElement("card")
         messageTextBox.id="messageTextBox"
         let clickDivOptionBox=document.createElement("card")
