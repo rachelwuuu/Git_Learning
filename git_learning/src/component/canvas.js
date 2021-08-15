@@ -43,7 +43,17 @@ export default function canvas() {
     function handleSubmit(){
         ///////////1.Separate the text from input box and store them in an array
         var commitInformation=document.getElementById("commit_information").value
-        var commitInfo=commitInformation.replace(/\n/g," ")//ticket:\r linux?
+        //var commitInfo=commitInformation.replace(/\n/g," ")//ticket:\r linux?
+        //console.log(commitInformation.search("\ncommit"))
+        var os=require('os')
+        //console.log(JSON.stringify(os.EOL)+"commit")
+        var newLineAndCommit=JSON.stringify(os.EOL).replace('""',"")+"commit"
+        console.log("hey"+newLineAndCommit)
+        /*var test=commitInformation.split(/(?=\ncommit)/g)
+        for(let p=0;p<test.length;p++) {
+            console.log(test.length)
+            console.log(test[p]+"**************************\n")
+        }*/
         let messageTextBox=document.createElement("card")
         messageTextBox.id="messageTextBox"
         let clickDivOptionBox=document.createElement("card")
@@ -88,19 +98,20 @@ export default function canvas() {
         clickDivOptionBox.appendChild(createCommitButton)
         clickDivOptionBox.appendChild(createBranchButton)
         clickDivOptionBox.appendChild(checkoutCommitButton)
-        if (commitInfo.startsWith("commit ")){
-            if(commitInfo.includes("HEAD")){
-                var newCommitArray=commitInfo.split(/(?=commit)/g);
+        if (commitInformation.startsWith("commit ")){
+            if(commitInformation.includes("HEAD")){
+                var newCommitArray=commitInformation.split(/(?=\ncommit)/g);
                 var validCommitMessage=false;
                 //////////////2. Loop through the array and draw the elements dynamically on the website
                 for(let p=0;p<newCommitArray.length;p++) {
                     let elementCheck=newCommitArray[p];
+                    elementCheck=elementCheck.replace(/\n/g,"")
+                    console.log(elementCheck)
                     //continue spliting the commit message into commit id, author, date, and commit message
                     let commitId=elementCheck.substring(7,47)
                     let patternOfGitCommitId=/[\w]{40}/
                     if(patternOfGitCommitId.test(commitId) && elementCheck.charAt(47)===" "){
                         validCommitMessage=true;
-                        console.log(elementCheck.charAt(47))
                         let Author=elementCheck.split(/(?=Author: )/).pop().split(/(?= Date)/)[0].trim()
                         let commitTime=elementCheck.split(/(?=(Date: ))/).pop().split(/(?= -)/)[0].trim()
                         let commitMessage=elementCheck.split(/-(\d){4} /).pop().trim()
@@ -112,7 +123,7 @@ export default function canvas() {
                         commitInfo.commitAuthor=Author
                         commitArray.push(commitInfo)
                     }else{
-                        console.log("Please enter a commit message with a valid commit id."+elementCheck.charAt(47))
+                        console.log("Please enter a commit message with a valid commit id."+elementCheck.charAt(7))
                         validCommitMessage=false;
                         break;
                     }
